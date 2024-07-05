@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bannissement index{% endblock %}
+
+{% block body %}
+    <h1>Bannissement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Raison</th>
+                <th>DateDeBannissement</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bannissement in bannissements %}
+            <tr>
+                <td>{{ bannissement.id }}</td>
+                <td>{{ bannissement.raison }}</td>
+                <td>{{ bannissement.dateDeBannissement ? bannissement.dateDeBannissement|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ bannissement.statut ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_bannissement_show', {'id': bannissement.id}) }}">show</a>
+                    <a href="{{ path('app_bannissement_edit', {'id': bannissement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bannissement_new') }}">Create new</a>
+{% endblock %}

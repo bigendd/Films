@@ -1,0 +1,39 @@
+{# templates/films/detail.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{{ film.title }}</h1>
+<img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
+<p>{{ film.overview }}</p>
+<p>Release Date: {{ film.release_date }}</p>
+<p>Rating: {{ film.vote_average }}</p>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if isFavorite %}
+        <p>This movie is in your favorites.</p>
+    {% else %}
+        <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
+            <button type="submit">Add to Favorites</button>
+        </form>
+    {% endif %}
+{% endif %}
+
+<h2>Reviews</h2>
+{% for review in reviews %}
+    <div class="review">
+        <p><strong>{{ review.user.email }}:</strong></p>
+        <p>{{ review.content }}</p>
+        <p><small>Reviewed on {{ review.createAt|date('Y-m-d H:i') }}</small></p>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and review.user == app.user %}
+            <a href="{{ path('review_edit', {'id': review.id}) }}" class="btn btn-secondary">Edit</a>
+            <form action="{{ path('review_delete', {'id': review.id}) }}" method="post" style="display:inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review.id) }}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        {% elseif is_granted('IS_AUTHENTICATED_FULLY') and review.user != app.user %}
+            <a href="{{ path('user_report_new', {'id': review.id}) }}" class="btn btn-danger">Report</a>
+        {% endif %}
+    </div>
+{% else %}
+    <p>No reviews yet. Be the first to review!</p>
+{% endfor %}
+{% endblock %}

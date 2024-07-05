@@ -1,0 +1,20 @@
+{# templates/films/favorite.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>My Favorite Movies</h1>
+<form action="{{ path('favorite_clear') }}" method="post">
+    <button type="submit" class="btn btn-danger">Clear All Favorites</button>
+</form>
+<div class="favorite-list">
+    {% for favorite in favorites %}
+        <div class="favorite-item">
+            <h2><a href="{{ path('film_detail', {'id': favorite.filmId}) }}">{{ favorite.titre }}</a></h2>
+            <p>Added on: {{ favorite.dateDeCreation|date('Y-m-d') }}</p>
+            <form action="{{ path('favorite_delete', {'id': favorite.filmId}) }}" method="post">
+                <button type="submit" class="btn btn-danger">Remove from Favorites</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

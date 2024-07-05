@@ -1,0 +1,52 @@
+{# templates/films/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Popular Movies</h1>
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="{{ path('favorite_list') }}" class="btn btn-primary">View Favorite Movies</a>
+{% endif %}
+
+<form method="get" action="{{ path('film_list') }}">
+    <input type="text" name="search" value="{{ searchQuery }}" placeholder="Search for movies...">
+    <button type="submit">Search</button>
+</form>
+
+<div class="movie-list">
+    {% for film in films %}
+        <div class="movie-item">
+            <img src="https://image.tmdb.org/t/p/w200{{ film.poster_path }}" alt="{{ film.title }} poster">
+            <h2><a href="{{ path('film_detail', {'id': film.id}) }}">{{ film.title }}</a></h2>
+            <p>Release Date: {{ film.release_date }}</p>
+            <p>Rating: {{ film.vote_average }}</p>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
+                    <button type="submit">Add to Favorites</button>
+                </form>
+            {% endif %}
+            
+            {# Add Details button here #}
+            <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-info">Details</a>
+        </div>
+    {% endfor %}
+</div>
+
+{% if totalPages > 1 %}
+    <div class="pagination">
+        <a href="{{ path('film_list', { 'page': 1, 'search': searchQuery }) }}"><<</a>
+        {% if currentPage > 1 %}
+            <a href="{{ path('film_list', { 'page': currentPage - 1, 'search': searchQuery }) }}"><</a>
+        {% endif %}
+        {% for i in range(1, totalPages + 1) %}
+            {% if i >= currentPage - 4 and i <= currentPage + 4 %}
+                <a href="{{ path('film_list', { 'page': i, 'search': searchQuery }) }}" class="{{ currentPage == i ? 'active' : '' }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if currentPage < totalPages %}
+            <a href="{{ path('film_list', { 'page': currentPage + 1, 'search': searchQuery }) }}">></a>
+        {% endif %}
+        <a href="{{ path('film_list', { 'page': totalPages, 'search': searchQuery }) }}">>></a>
+    </div>
+{% endif %}
+{% endblock %}
