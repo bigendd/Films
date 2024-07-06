@@ -23,8 +23,8 @@ class Avis
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDeCreation = null;
 
-    #[ORM\Column]
-    private ?bool $statut = null;
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $statut = false;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]

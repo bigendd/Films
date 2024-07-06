@@ -1,11 +1,11 @@
+{# templates/review/new.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}New Avis{% endblock %}
-
 {% block body %}
-    <h1>Create new Avis</h1>
+<h1>Add a Review</h1>
 
-    {{ include('avis/_form.html.twig') }}
-
-    <a href="{{ path('app_avis_index') }}">back to list</a>
+{{ form_start(form) }}
+    {{ form_row(form.commentaire) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
 {% endblock %}

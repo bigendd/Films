@@ -16,6 +16,7 @@
 <div class="movie-list">
     {% for film in films %}
         <div class="movie-item">
+            {# Assuming film.poster_path is correctly populated with the full image path #}
             <img src="https://image.tmdb.org/t/p/w200{{ film.poster_path }}" alt="{{ film.title }} poster">
             <h2><a href="{{ path('film_detail', {'id': film.id}) }}">{{ film.title }}</a></h2>
             <p>Release Date: {{ film.release_date }}</p>
@@ -26,12 +27,13 @@
                 </form>
             {% endif %}
             
-            {# Add Details button here #}
+            {# Details button linking to film_detail route #}
             <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-info">Details</a>
         </div>
     {% endfor %}
 </div>
 
+{# Pagination links #}
 {% if totalPages > 1 %}
     <div class="pagination">
         <a href="{{ path('film_list', { 'page': 1, 'search': searchQuery }) }}"><<</a>

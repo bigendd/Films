@@ -11,7 +11,10 @@
         <div class="favorite-item">
             <h2><a href="{{ path('film_detail', {'id': favorite.filmId}) }}">{{ favorite.titre }}</a></h2>
             <p>Added on: {{ favorite.dateDeCreation|date('Y-m-d') }}</p>
-            <form action="{{ path('favorite_delete', {'id': favorite.filmId}) }}" method="post">
+            {% set tmdbBaseUrl = 'https://image.tmdb.org/t/p/w200/' %}
+            {% set imageUrl = tmdbBaseUrl ~ favorite.filmId %}
+            <img src="{{ imageUrl }}" alt="{{ favorite.titre }} Poster" style="max-width: 200px; height: auto;">
+            <form action="{{ path('favorite_delete', {'id': favorite.id}) }}" method="post">
                 <button type="submit" class="btn btn-danger">Remove from Favorites</button>
             </form>
         </div>

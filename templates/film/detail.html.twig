@@ -15,22 +15,23 @@
             <button type="submit">Add to Favorites</button>
         </form>
     {% endif %}
+    <a href="{{ path('review_new', {'filmId': film.id}) }}">Add a Review</a>
 {% endif %}
 
 <h2>Reviews</h2>
 {% for review in reviews %}
     <div class="review">
-        <p><strong>{{ review.user.email }}:</strong></p>
-        <p>{{ review.content }}</p>
-        <p><small>Reviewed on {{ review.createAt|date('Y-m-d H:i') }}</small></p>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') and review.user == app.user %}
+        <p><strong>{{ review.utilisateur.email }}:</strong></p>
+        <p>{{ review.commentaire }}</p>
+        <p><small>Reviewed on {{ review.dateDeCreation|date('Y-m-d H:i') }}</small></p>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and review.utilisateur == app.user %}
             <a href="{{ path('review_edit', {'id': review.id}) }}" class="btn btn-secondary">Edit</a>
             <form action="{{ path('review_delete', {'id': review.id}) }}" method="post" style="display:inline;">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review.id) }}">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
-        {% elseif is_granted('IS_AUTHENTICATED_FULLY') and review.user != app.user %}
-            <a href="{{ path('user_report_new', {'id': review.id}) }}" class="btn btn-danger">Report</a>
+        {% elseif is_granted('IS_AUTHENTICATED_FULLY') and review.utilisateur != app.user %}
+        
         {% endif %}
     </div>
 {% else %}

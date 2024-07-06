@@ -14,16 +14,7 @@ class AvisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('filmId')
-            ->add('commentaire')
-            ->add('dateDeCreation', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('statut')
-            ->add('utilisateur', EntityType::class, [
-                'class' => Utilisateur::class,
-                'choice_label' => 'id',
-            ])
+        ->add('commentaire')
         ;
     }
 
