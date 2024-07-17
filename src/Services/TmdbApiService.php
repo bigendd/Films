@@ -28,15 +28,35 @@ class TmdbApiService
     }
 
     public function getMovieDetails(int $tmdbId): ?array
-    {
-        $response = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId, [
-            'query' => ['api_key' => $this->apiKey],
-        ]);
+{
+    // Récupération des détails du film
+    $responseDetails = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId, [
+        'query' => [
+            'api_key' => $this->apiKey,
+        ],
+    ]);
 
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return $response->toArray();
+    if ($responseDetails->getStatusCode() === 404) {
+        return null;
     }
+
+    $filmDetails = $responseDetails->toArray();
+
+    // Récupération des vidéos de bande-annonce
+    $responseVideos = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId . '/videos', [
+        'query' => [
+            'api_key' => $this->apiKey,
+        ],
+    ]);
+
+    if ($responseVideos->getStatusCode() === 404) {
+        $filmDetails['videos'] = null;
+    } else {
+        $videos = $responseVideos->toArray();
+        $filmDetails['videos'] = $videos['results'];
+    }
+
+    return $filmDetails;
+}
+
 }

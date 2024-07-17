@@ -26,8 +26,14 @@ class Contact
     #[ORM\Column]
     private ?bool $statut = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $reponseAdmin = null;
+
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Utilisateur $utilisateur = null;
 
     public function getId(): ?int
@@ -43,7 +49,6 @@ class Contact
     public function setObjet(?string $objet): static
     {
         $this->objet = $objet;
-
         return $this;
     }
 
@@ -55,7 +60,6 @@ class Contact
     public function setCorps(string $corps): static
     {
         $this->corps = $corps;
-
         return $this;
     }
 
@@ -67,7 +71,6 @@ class Contact
     public function setDateDenvoie(\DateTimeInterface $dateDenvoie): static
     {
         $this->dateDenvoie = $dateDenvoie;
-
         return $this;
     }
 
@@ -79,7 +82,28 @@ class Contact
     public function setStatut(bool $statut): static
     {
         $this->statut = $statut;
+        return $this;
+    }
 
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getReponseAdmin(): ?string
+    {
+        return $this->reponseAdmin;
+    }
+
+    public function setReponseAdmin(?string $reponseAdmin): static
+    {
+        $this->reponseAdmin = $reponseAdmin;
         return $this;
     }
 
@@ -91,7 +115,6 @@ class Contact
     public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 }

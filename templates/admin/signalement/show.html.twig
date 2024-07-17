@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Signalement{% endblock %}
+
+{% block body %}
+    <h1>Signalement</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{ signalement.id }}</td>
+        </tr>
+        <tr>
+            <th>Raison</th>
+            <td>{{ signalement.raison }}</td>
+        </tr>
+        <tr>
+            <th>Date de Création</th>
+            <td>{{ signalement.dateDeCreation|date('Y-m-d H:i') }}</td>
+        </tr>
+        <tr>
+            <th>Statut</th>
+            <td>{{ signalement.statut ? 'Oui' : 'Non' }}</td>
+        </tr>
+        <tr>
+            <th>Avis</th>
+            <td>{{ signalement.avis ? signalement.avis.id : 'N/A' }}</td>
+        </tr>
+        <tr>
+            <th>Utilisateur Qui Signale</th>
+            <td>{{ signalement.utilisateur ? signalement.utilisateur.email : 'N/A' }}</td>
+        </tr>
+    </table>
+
+    <a href="{{ path('admin_signalement_index') }}">Retour à la liste</a>
+
+    <h2>Répondre au Signalement et Bannir Utilisateur</h2>
+    <form method="post" action="{{ path('admin_signalement_handle', {'id': signalement.id}) }}">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ban_type" id="ban7" value="7">
+            <label class="form-check-label" for="ban7">
+                Bannir pour 7 jours
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ban_type" id="ban_indefinite" value="indefinite">
+            <label class="form-check-label" for="ban_indefinite">
+                Bannir définitivement
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="ban_type" id="no_ban" value="none" checked>
+            <label class="form-check-label" for="no_ban">
+                Ne pas bannir
+            </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+    </form>
+{% endblock %}

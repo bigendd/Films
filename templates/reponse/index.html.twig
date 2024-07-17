@@ -1,0 +1,23 @@
+{# templates/emails/reponse_signalement.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Réponse à votre signalement</title>
+</head>
+<body>
+    <p>Bonjour {{ signalement.utilisateur.email }},</p>
+
+    <p>Nous avons bien reçu votre signalement concernant l'avis suivant :</p>
+
+    <p><strong>Avis :</strong> {{ signalement.avis.commentaire }}</p>
+    <p><strong>Raison du signalement :</strong> {{ signalement.raison }}</p>
+
+    <p>Notre équipe va examiner votre signalement et prendra les mesures appropriées.</p>
+
+    <p>Merci de nous avoir alertés.</p>
+
+    <p>Cordialement,</p>
+    <p>L'équipe de modération</p>
+</body>
+</html>

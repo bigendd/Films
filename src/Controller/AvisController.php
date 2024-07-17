@@ -1,92 +1,101 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Avis;
 use App\Form\AvisType;
-use App\Repository\FilmRepository;
-use App\Repository\AvisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\TmdbApiService;  // Ajoute ceci
 
 class AvisController extends AbstractController
 {
     private $entityManager;
+    private $tmdbApiService;  // Ajoute ceci
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, TmdbApiService $tmdbApiService)  // Modifie ceci
     {
         $this->entityManager = $entityManager;
+        $this->tmdbApiService = $tmdbApiService;  // Modifie ceci
     }
 
-    #[Route('/review/new/{filmId}', name: 'review_new', methods: ['GET', 'POST'])]
+    #[Route('/avis/new/{filmId}', name: 'avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, int $filmId): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $review = new Avis();
-        $form = $this->createForm(AvisType::class, $review);
+        // Empêcher les administrateurs de soumettre des avis
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Les administrateurs ne peuvent pas laisser des avis.');
+            return $this->redirectToRoute('film_detail', ['id' => $filmId]);
+        }
+
+        $filmDetails = $this->tmdbApiService->getMovieDetails($filmId);
+        if (!$filmDetails) {
+            throw $this->createNotFoundException('Le film n\'existe pas.');
+        }
+
+        $avis = new Avis();
+        $avis->setTitre($filmDetails['title']);  // Set the film title
+
+        $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $review->setUtilisateur($this->getUser());
-            $review->setDateDeCreation(new \DateTime());
-            $review->setFilmId($filmId);
+            $avis->setUtilisateur($this->getUser());
+            $avis->setDateDeCreation(new \DateTime());
+            $avis->setFilmId($filmId);
 
-            $this->entityManager->persist($review);
+            $this->entityManager->persist($avis);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('film_detail', ['id' => $filmId]);
         }
 
         return $this->render('avis/new.html.twig', [
-            'review' => $review,
+            'avis' => $avis,
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/review/{id}/edit', name: 'review_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Avis $review): Response
+    #[Route('/avis/{id}/edit', name: 'avis_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Avis $avis): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        if ($this->getUser() !== $review->getUtilisateur()) {
+        if ($this->getUser() !== $avis->getUtilisateur()) {
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(AvisType::class, $review);
+        $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('film_detail', ['id' => $review->getFilmId()]);
+            return $this->redirectToRoute('film_detail', ['id' => $avis->getFilmId()]);
         }
 
         return $this->render('avis/edit.html.twig', [
-            'review' => $review,
+            'avis' => $avis,
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/review/{id}/delete', name: 'review_delete', methods: ['POST'])]
-    public function delete(Request $request, Avis $review): Response
+    #[Route('/avis/{id}/delete', name: 'avis_delete', methods: ['POST'])]
+    public function delete(Request $request, Avis $avis): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        if ($this->getUser() !== $review->getUtilisateur()) {
+        if ($this->getUser() !== $avis->getUtilisateur()) {
             throw $this->createAccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->request->get('_token'))) {
-            $this->entityManager->remove($review);
+        if ($this->isCsrfTokenValid('delete'.$avis->getId(), $request->request->get('_token'))) {
+            $this->entityManager->remove($avis);
             $this->entityManager->flush();
         }
 
-        return $this->redirectToRoute('film_detail', ['id' => $review->getFilmId()]);
+        return $this->redirectToRoute('film_detail', ['id' => $avis->getFilmId()]);
     }
-
-  
-
-   
 }

@@ -1,40 +1,77 @@
-{# templates/films/detail.html.twig #}
+{# templates/film/detail.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>{{ film.title }}</h1>
-<img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
-<p>{{ film.overview }}</p>
-<p>Release Date: {{ film.release_date }}</p>
-<p>Rating: {{ film.vote_average }}</p>
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    {% if isFavorite %}
-        <p>This movie is in your favorites.</p>
-    {% else %}
-        <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
-            <button type="submit">Add to Favorites</button>
-        </form>
-    {% endif %}
-    <a href="{{ path('review_new', {'filmId': film.id}) }}">Add a Review</a>
-{% endif %}
+<div class="container">
+    <h1>{{ film.title }}</h1>
 
-<h2>Reviews</h2>
-{% for review in reviews %}
-    <div class="review">
-        <p><strong>{{ review.utilisateur.email }}:</strong></p>
-        <p>{{ review.commentaire }}</p>
-        <p><small>Reviewed on {{ review.dateDeCreation|date('Y-m-d H:i') }}</small></p>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') and review.utilisateur == app.user %}
-            <a href="{{ path('review_edit', {'id': review.id}) }}" class="btn btn-secondary">Edit</a>
-            <form action="{{ path('review_delete', {'id': review.id}) }}" method="post" style="display:inline;">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ review.id) }}">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        {% elseif is_granted('IS_AUTHENTICATED_FULLY') and review.utilisateur != app.user %}
-        
-        {% endif %}
+    <div class="film-details">
+        <div class="film-poster">
+            <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
+        </div>
+        <div class="film-info">
+            <p>{{ film.overview }}</p>
+            <p>Date de sortie: {{ film.release_date }}</p>
+            <p>Note: {{ film.vote_average }}</p>
+
+            {% if film.videos is not empty %}
+                <h2>Bande-annonce</h2>
+                {% set trailerFound = false %}
+                {% for video in film.videos %}
+                    {% if video.type == 'Trailer' and not trailerFound %}
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video.key }}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        {% set trailerFound = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if not trailerFound %}
+                    <p>Aucune bande-annonce disponible.</p>
+                {% endif %}
+            {% else %}
+                <p>Aucune vidéo disponible.</p>
+            {% endif %}
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if isFavorite %}
+                    <p>Ce film est dans vos favoris.</p>
+                {% else %}
+                    <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
+                        <button type="submit" class="btn btn-secondary">Ajouter aux favoris</button>
+                    </form>
+                {% endif %}
+                {% if not is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('avis_new', {'filmId': film.id}) }}" class="btn btn-secondary">Ajouter un avis</a>
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
-{% else %}
-    <p>No reviews yet. Be the first to review!</p>
-{% endfor %}
+
+    <h2>Commentaire</h2>
+    {% for avi in avis %}
+        <div class="avis">
+            <p><strong>{{ avi.utilisateur.email }}:</strong></p>
+            <p>{{ avi.commentaire }}</p>
+            <p><small>Reviewed on {{ avi.dateDeCreation|date('Y-m-d H:i') }}</small></p>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and avi.utilisateur == app.user %}
+                <a href="{{ path('avis_edit', {'id': avi.id}) }}" class="btn btn-secondary">Edit</a>
+                <form action="{{ path('avis_delete', {'id': avi.id}) }}" method="post" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            {% elseif is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+                <form action="{{ path('avis_archive', {'id': avi.id}) }}" method="post" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ avi.id) }}">
+                    <button type="submit" class="btn btn-secondary">Archiver</button>
+                </form>
+            {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('signalement_new', {'id': avi.id}) }}" class="btn btn-danger">Signaler</a>
+            {% endif %}
+        </div>
+        
+    {% else %}
+        <p>Aucun avis pour l'instant.</p>
+    {% endfor %}
+</div>
 {% endblock %}

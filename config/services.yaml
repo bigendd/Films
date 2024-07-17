@@ -29,3 +29,11 @@ services:
             $httpClient: '@http_client'
             $apiKey: '%tmdb_api_key%'
             $baseUrl: '%tmdb_api_base_url%'
+            # config/services.yaml
+
+    # ...
+    App\Security\UserChecker:
+        autowire: true
+        tags:
+            - { name: 'security.user_checker' }
+

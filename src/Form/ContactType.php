@@ -3,34 +3,30 @@
 namespace App\Form;
 
 use App\Entity\Contact;
-use App\Entity\Utilisateur;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContactType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+                'required' => !$options['is_authenticated'], // Non requis si l'utilisateur est authentifié
+            ])
             ->add('objet')
-            ->add('corps')
-            ->add('dateDenvoie', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('statut')
-            ->add('utilisateur', EntityType::class, [
-                'class' => Utilisateur::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            ->add('corps');
+        // Ajoutez d'autres champs de formulaire si nécessaire
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Contact::class,
+            'is_authenticated' => false, // Valeur par défaut
         ]);
     }
 }

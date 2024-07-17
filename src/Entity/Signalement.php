@@ -20,8 +20,8 @@ class Signalement
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDeCreation = null;
 
-    #[ORM\Column]
-    private ?bool $statut = null;
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $statut = false;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -29,7 +29,7 @@ class Signalement
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $utilisateurQuiSignale = null;
+    private ?Utilisateur $utilisateur = null;
 
     public function getId(): ?int
     {
@@ -84,14 +84,14 @@ class Signalement
         return $this;
     }
 
-    public function getUtilisateurQuiSignale(): ?Utilisateur
+    public function getUtilisateur(): ?Utilisateur
     {
-        return $this->utilisateurQuiSignale;
+        return $this->utilisateur;
     }
 
-    public function setUtilisateurQuiSignale(?Utilisateur $utilisateurQuiSignale): static
+    public function setUtilisateur(?Utilisateur $utilisateur): static
     {
-        $this->utilisateurQuiSignale = $utilisateurQuiSignale;
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

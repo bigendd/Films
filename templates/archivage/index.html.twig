@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Archivage - {{ type|capitalize }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Archivage - {{ type|capitalize }}</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email Utilisateur</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        {% if entity.utilisateur %}
+                            <td>{{ entity.utilisateur.email }}</td>
+                        {% else %}
+                            <td>{{ entity.email }}</td>
+                        {% endif %}
+                        <td>{{ entity.statut ? 'Archivé' : 'Non archivé' }}</td>
+                        <td>
+                            <a class="btn" href="{{ path('app_archive', {'type': type, 'id': entity.id}) }}">
+                                {{ entity.statut ? 'Désarchiver' : 'Archiver' }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

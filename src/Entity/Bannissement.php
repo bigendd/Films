@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Bannissement.php
 
 namespace App\Entity;
 
@@ -20,13 +21,26 @@ class Bannissement
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDeBannissement = null;
 
-    #[ORM\Column]
-    private ?bool $statut = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\OneToOne]
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $statut = false;
+
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private bool $definitif = false;
+
+    #[ORM\OneToOne(inversedBy: 'bannissement', targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    #[ORM\Column(type: Types::STRING, length: 10)]
+    private ?string $duree = null; // Nouvelle propriété
+
+    public function __construct()
+    {
+        $this->dateDeBannissement = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -41,7 +55,6 @@ class Bannissement
     public function setRaison(string $raison): static
     {
         $this->raison = $raison;
-
         return $this;
     }
 
@@ -53,11 +66,21 @@ class Bannissement
     public function setDateDeBannissement(\DateTimeInterface $dateDeBannissement): static
     {
         $this->dateDeBannissement = $dateDeBannissement;
-
         return $this;
     }
 
-    public function isStatut(): ?bool
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): static
+    {
+        $this->dateFin = $dateFin;
+        return $this;
+    }
+
+    public function isStatut(): bool
     {
         return $this->statut;
     }
@@ -65,7 +88,17 @@ class Bannissement
     public function setStatut(bool $statut): static
     {
         $this->statut = $statut;
+        return $this;
+    }
 
+    public function isDefinitif(): bool
+    {
+        return $this->definitif;
+    }
+
+    public function setDefinitif(bool $definitif): static
+    {
+        $this->definitif = $definitif;
         return $this;
     }
 
@@ -77,9 +110,40 @@ class Bannissement
     public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 
-  
+    public function getDuree(): ?string // Nouvelle méthode getter
+    {
+        return $this->duree;
+    }
+
+    public function setDuree(string $duree): static // Nouvelle méthode setter
+    {
+        $this->duree = $duree;
+        return $this;
+    }
+
+    public function getRemainingDays(): ?int // Nouvelle méthode pour calculer les jours restants
+    {
+        if ($this->dateFin) {
+            $now = new \DateTime();
+            $interval = $now->diff($this->dateFin);
+            return $interval->days;
+        }
+        return null;
+    }
+
+    public function isBanned(): bool
+    {
+        if ($this->definitif) {
+            return true;
+        }
+
+        if ($this->dateFin !== null && $this->dateFin > new \DateTime()) {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+// src/Entity/InfoUtilisateur.php
 
 namespace App\Entity;
 
@@ -27,7 +28,6 @@ class InfoUtilisateur
     private ?int $codePostale = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    
     private ?string $adressePostale = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -36,9 +36,17 @@ class InfoUtilisateur
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDeCreation = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateDeModification = null;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
+
+    public function __construct()
+    {
+        $this->dateDeCreation = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -53,7 +61,6 @@ class InfoUtilisateur
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -65,7 +72,6 @@ class InfoUtilisateur
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -77,7 +83,6 @@ class InfoUtilisateur
     public function setDateDeNaissance(?\DateTimeInterface $dateDeNaissance): static
     {
         $this->dateDeNaissance = $dateDeNaissance;
-
         return $this;
     }
 
@@ -89,7 +94,6 @@ class InfoUtilisateur
     public function setCodePostale(?int $codePostale): static
     {
         $this->codePostale = $codePostale;
-
         return $this;
     }
 
@@ -101,7 +105,6 @@ class InfoUtilisateur
     public function setAdressePostale(?string $adressePostale): static
     {
         $this->adressePostale = $adressePostale;
-
         return $this;
     }
 
@@ -113,7 +116,6 @@ class InfoUtilisateur
     public function setNumeroDeTelephone(?string $numeroDeTelephone): static
     {
         $this->numeroDeTelephone = $numeroDeTelephone;
-
         return $this;
     }
 
@@ -125,7 +127,17 @@ class InfoUtilisateur
     public function setDateDeCreation(\DateTimeInterface $dateDeCreation): static
     {
         $this->dateDeCreation = $dateDeCreation;
+        return $this;
+    }
 
+    public function getDateDeModification(): ?\DateTimeInterface
+    {
+        return $this->dateDeModification;
+    }
+
+    public function setDateDeModification(?\DateTimeInterface $dateDeModification): static
+    {
+        $this->dateDeModification = $dateDeModification;
         return $this;
     }
 
@@ -137,7 +149,6 @@ class InfoUtilisateur
     public function setUtilisateur(Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 }

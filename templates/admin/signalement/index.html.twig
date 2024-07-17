@@ -1,0 +1,37 @@
+{# templates/signalement/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Signalements{% endblock %}
+
+{% block body %}
+    <h1>Liste des Signalements</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Raison</th>
+                <th>Date de Création</th>
+                <th>Statut</th>
+                <th>Avis</th>
+                <th>Utilisateur Qui Signale</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for signalement in signalements %}
+                <tr>
+                    <td>{{ signalement.id }}</td>
+                    <td>{{ signalement.raison }}</td>
+                    <td>{{ signalement.dateDeCreation|date('Y-m-d H:i') }}</td>
+                    <td>{{ signalement.statut ? 'Oui' : 'Non' }}</td>
+                    <td>{{ signalement.avis.id }}</td>
+                    <td>{{ signalement.utilisateur.email }}</td>
+                    <td>
+                        <a href="{{ path('admin_signalement_show', {'id': signalement.id}) }}">Voir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

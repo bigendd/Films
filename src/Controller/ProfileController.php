@@ -40,25 +40,25 @@ class ProfileController extends AbstractController
         // Récupérer InfoUtilisateur associé
         $infoUtilisateur = $em->getRepository(InfoUtilisateur::class)->findOneBy(['utilisateur' => $utilisateur]);
 
-        $form = $this->createForm(ProfileType::class, $utilisateur);
+        // Créer un InfoUtilisateur si n'existe pas
+        if (!$infoUtilisateur) {
+            $infoUtilisateur = new InfoUtilisateur();
+            $infoUtilisateur->setUtilisateur($utilisateur);
+        }
+
+        $form = $this->createForm(ProfileType::class, $infoUtilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Mettre à jour les champs de InfoUtilisateur manuellement
-            $infoUtilisateur->setNom($form->get('nom')->getData());
-            $infoUtilisateur->setDateDeNaissance($form->get('dateDeNaissance')->getData());
-            $infoUtilisateur->setGenre($form->get('genre')->getData());
-            $infoUtilisateur->setAdresse($form->get('adresse')->getData());
-            $infoUtilisateur->setNumeroDeTelephone($form->get('numeroDeTelephone')->getData());
+            $infoUtilisateur->setDateDeModification(new \DateTime());
 
             $em->persist($infoUtilisateur);
-            $em->persist($utilisateur);
             $em->flush();
 
             return $this->redirectToRoute('profile_edit');
         }
 
-        return $this->render('profile/index.html.twig', [
+        return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

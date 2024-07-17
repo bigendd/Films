@@ -1,0 +1,45 @@
+<nav>
+    <div class="container-fluid">
+
+        <a href="{{ path('film_list') }}">MyApp</a>
+
+        <div class="navbar-collapse">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('profile_view') }}">Profile</a>
+
+                <a href="{{ path('favorite_list') }}">Mes Favoris</a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <details>
+                        <summary>Archives</summary>
+                        <div>
+                            <a href="{{ path('app_archive_section', {'type': 'avis'}) }}">Archive Avis</a>
+                            <a href="{{ path('app_archive_section', {'type': 'bannissement'}) }}">Archive Bannissement</a>
+                            <a href="{{ path('app_archive_section', {'type': 'signalement'}) }}">Archive Signalement</a>
+                            <a href="{{ path('app_archive_section', {'type': 'contact'}) }}">Archive contact</a>
+                        </div>
+                    </details>
+
+                    <a href="{{ path('admin_bannissement_index') }}">Bannissement</a>
+                    <a href="{{ path('admin_avis_index') }}">Avis</a>
+                    <a href="{{ path('admin_contact_index') }}">Contact</a>
+                    {% if signalement is defined %}
+                        <a href="{{ path('admin_signalement_show', {'id': signalement.id}) }}">Signalement</a>
+                    {% else %}
+                        <a href="{{ path('admin_signalement_index') }}">Signalement</a>
+                    {% endif %}
+                    <a href="{{ path('admin_bannissement_index') }}">Bannissement</a>
+                {% endif %}
+
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+
+            {% else %}
+
+                <a href="{{ path('app_login') }}">Connexion</a>
+
+                <a href="{{ path('app_register') }}">Inscription</a>
+
+            {% endif %}
+        </div>
+    </div>
+</nav>

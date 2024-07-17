@@ -7,10 +7,14 @@
 {% block body %}
     <h1>Mon Profil</h1>
     <p><strong>Email :</strong> {{ utilisateur.email }}</p>
-    <p><strong>Nom :</strong> {{ infoUtilisateur.nom }}</p>
-    <p><strong>Date de Naissance :</strong> {{ infoUtilisateur.dateDeNaissance|date('Y-m-d') }}</p>
-    <p><strong>Genre :</strong> {{ infoUtilisateur.genre }}</p>
-    <p><strong>Adresse :</strong> {{ infoUtilisateur.adresse }}</p>
-    <p><strong>Numéro de Téléphone :</strong> {{ infoUtilisateur.numeroDeTelephone }}</p>
+    {% if infoUtilisateur %}
+        <p><strong>Nom :</strong> {{ infoUtilisateur.nom }}</p>
+        <p><strong>Prénom :</strong> {{ infoUtilisateur.prenom }}</p>
+        <p><strong>Date de Naissance :</strong> {{ infoUtilisateur.dateDeNaissance ? infoUtilisateur.dateDeNaissance|date('Y-m-d') : 'N/A' }}</p>
+        <p><strong>Adresse :</strong> {{ infoUtilisateur.adressePostale }}</p>
+        <p><strong>Numéro de Téléphone :</strong> {{ infoUtilisateur.numeroDeTelephone }}</p>
+    {% else %}
+        <p>Aucune information utilisateur disponible.</p>
+    {% endif %}
     <a href="{{ path('profile_edit') }}">Modifier le profil</a>
 {% endblock %}

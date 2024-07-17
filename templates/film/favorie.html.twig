@@ -15,6 +15,7 @@
             {% set imageUrl = tmdbBaseUrl ~ favorite.filmId %}
             <img src="{{ imageUrl }}" alt="{{ favorite.titre }} Poster" style="max-width: 200px; height: auto;">
             <form action="{{ path('favorite_delete', {'id': favorite.id}) }}" method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ favorite.id) }}">
                 <button type="submit" class="btn btn-danger">Remove from Favorites</button>
             </form>
         </div>

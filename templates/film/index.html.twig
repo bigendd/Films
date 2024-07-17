@@ -1,54 +1,38 @@
-{# templates/films/index.html.twig #}
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des Films{% endblock %}
+
 {% block body %}
-<h1>Popular Movies</h1>
+    <h1>Liste des Films</h1>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ path('favorite_list') }}" class="btn btn-primary">Voir les films favoris</a>
+    {% endif %}
 
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a href="{{ path('favorite_list') }}" class="btn btn-primary">View Favorite Movies</a>
-{% endif %}
+    <form action="{{ path('film_list') }}" method="get" class="form-inline mb-4">
+        <input type="text" name="search" placeholder="Rechercher..." class="form-control mr-sm-2" value="{{ searchQuery }}">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
 
-<form method="get" action="{{ path('film_list') }}">
-    <input type="text" name="search" value="{{ searchQuery }}" placeholder="Search for movies...">
-    <button type="submit">Search</button>
-</form>
-
-<div class="movie-list">
-    {% for film in films %}
-        <div class="movie-item">
-            {# Assuming film.poster_path is correctly populated with the full image path #}
-            <img src="https://image.tmdb.org/t/p/w200{{ film.poster_path }}" alt="{{ film.title }} poster">
-            <h2><a href="{{ path('film_detail', {'id': film.id}) }}">{{ film.title }}</a></h2>
-            <p>Release Date: {{ film.release_date }}</p>
-            <p>Rating: {{ film.vote_average }}</p>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
-                    <button type="submit">Add to Favorites</button>
-                </form>
-            {% endif %}
-            
-            {# Details button linking to film_detail route #}
-            <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-info">Details</a>
-        </div>
-    {% endfor %}
+ <div class="row">
+    {% if films.items|length > 0 %}
+        {% for film in films.items %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" class="card-img-top" alt="{{ film.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ film.title }}</h5>
+                        <p class="card-text">{{ film.overview }}</p>
+                        <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-primary">Détails</a>
+                        <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success">Ajouter aux favoris</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucun film trouvé pour cette page.</p>
+    {% endif %}
 </div>
 
-{# Pagination links #}
-{% if totalPages > 1 %}
-    <div class="pagination">
-        <a href="{{ path('film_list', { 'page': 1, 'search': searchQuery }) }}"><<</a>
-        {% if currentPage > 1 %}
-            <a href="{{ path('film_list', { 'page': currentPage - 1, 'search': searchQuery }) }}"><</a>
-        {% endif %}
-        {% for i in range(1, totalPages + 1) %}
-            {% if i >= currentPage - 4 and i <= currentPage + 4 %}
-                <a href="{{ path('film_list', { 'page': i, 'search': searchQuery }) }}" class="{{ currentPage == i ? 'active' : '' }}">{{ i }}</a>
-            {% endif %}
-        {% endfor %}
-        {% if currentPage < totalPages %}
-            <a href="{{ path('film_list', { 'page': currentPage + 1, 'search': searchQuery }) }}">></a>
-        {% endif %}
-        <a href="{{ path('film_list', { 'page': totalPages, 'search': searchQuery }) }}">>></a>
-    </div>
-{% endif %}
 {% endblock %}
