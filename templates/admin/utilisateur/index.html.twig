@@ -1,0 +1,27 @@
+{# templates/admin/users.html.twig #}
+
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block admin %}
+    <h1>Liste des utilisateurs</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Banni</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in users %}
+                <tr>
+                    <td>{{ item.user.id }}</td>
+                    <td>{{ item.user.email }}</td>
+                    <td>{{ item.isBanned ? 'Oui' : 'Non' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

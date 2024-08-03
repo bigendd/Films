@@ -1,0 +1,38 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Détail de l'Avis
+{% endblock %}
+
+{% block admin %}
+
+	<div class="content">
+		<h1>Détail de l'Avis</h1>
+
+		<div>
+			<p>
+				<strong>ID:</strong>
+				{{ avis.id }}</p>
+			<p>
+				<strong>Utilisateur:</strong>
+				{{ avis.utilisateur.email }}</p>
+			<p>
+				<strong>Commentaire:</strong>
+				{{ avis.commentaire }}</p>
+			<p>
+				<strong>Date de création:</strong>
+				{{ avis.dateDeCreation|date('Y-m-d H:i') }}</p>
+			<p>
+				<strong>Statut:</strong>
+				{{ avis.statut ? 'Archivé' : 'Actif' }}</p>
+			<p>
+				<strong>Titre:</strong>
+				{{ avis.titre }}</p>
+		</div>
+
+		<div class="form_act">
+			<form method="post" action="{{ path('admin_avis_archive', {'id': avis.id}) }}">
+				<button type="submit" class="btn btn-danger">Archiver</button>
+			</form>
+			<a href="{{ path('admin_avis_index') }}" class="btn btn-secondary">Retour à la liste</a>
+		</div>
+	{% endblock %}

@@ -32,6 +32,7 @@ class AvisRepository extends ServiceEntityRepository
             ->andWhere('a.statut = :statut')
             ->setParameter('filmId', $filmId)
             ->setParameter('statut', $statut)
+            ->orderBy('a.dateDeCreation', 'DESC')
             ->getQuery()
             ->getResult();
     }

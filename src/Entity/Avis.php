@@ -33,6 +33,12 @@ class Avis
     #[ORM\Column(length: 150)]
     private ?string $titre = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $archiverPar = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE , nullable: true)]
+    private ?\DateTimeInterface $dateArchivage = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +112,30 @@ class Avis
     public function setTitre(string $titre): static
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getArchiverPar(): ?string
+    {
+        return $this->archiverPar;
+    }
+
+    public function setArchiverPar(string $archiverPar): static
+    {
+        $this->archiverPar = $archiverPar;
+
+        return $this;
+    }
+
+    public function getDateArchivage(): ?\DateTimeInterface
+    {
+        return $this->dateArchivage;
+    }
+
+    public function setDateArchivage(\DateTimeInterface $dateArchivage): static
+    {
+        $this->dateArchivage = $dateArchivage;
 
         return $this;
     }

@@ -1,42 +1,40 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Bannissement index{% endblock %}
 
-{% block body %}
+{% block admin %}
     <h1>Bannissement index</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Raison</th>
-                <th>DateDeBannissement</th>
-                <th>Statut</th>
-                <th>actions</th>
+                <th >Id</th>
+                <th class="column-id">Raison</th>
+                <th class="column-actions">DateDeBannissement</th>
+                <th >actions</th>
             </tr>
         </thead>
         <tbody>
         {% for bannissement in bannissements %}
             <tr>
-                <td>{{ bannissement.id }}</td>
-                <td>{{ bannissement.raison }}</td>
-                <td>{{ bannissement.dateDeBannissement ? bannissement.dateDeBannissement|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ bannissement.statut ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('admin_bannissement_show', {'id': bannissement.id}) }}">show</a>
-                    <a href="{{ path('admin_bannissement_edit', {'id': bannissement.id}) }}">edit</a>
+                <td >{{ bannissement.id }}</td>
+                <td class="column-id">{{ bannissement.raison }}</td>
+                <td class="column-actions">{{ bannissement.dateDeBannissement ? bannissement.dateDeBannissement|date('Y-m-d H:i:s') : '' }}</td>
+                <td >
+                    <a href="{{ path('admin_bannissement_show', {'id': bannissement.id}) }}"class="btn btn-primary">show</a>
+                    <a href="{{ path('admin_bannissement_edit', {'id': bannissement.id}) }}" class="btn btn-success ">edit</a>
                     {% if not bannissement.statut %}
-                        <a href="{{ path('app_archive', {'type': 'bannissement', 'id': bannissement.id}) }}">archiver</a>
+                        <a href="{{ path('app_archive', {'type': 'bannissement', 'id': bannissement.id}) }}" class="btn btn-danger">archiver</a>
                     {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Pas de données trouvée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('admin_bannissement_new') }}">Create new</a>
+    <a href="{{ path('admin_bannissement_new') }}" class="btn btn-primary">Create new</a>
 {% endblock %}

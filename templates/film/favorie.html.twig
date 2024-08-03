@@ -1,24 +1,32 @@
-{# templates/films/favorite.html.twig #}
 {% extends 'base.html.twig' %}
+{% block title %}Mes Favoris{% endblock %}
 
 {% block body %}
-<h1>My Favorite Movies</h1>
-<form action="{{ path('favorite_clear') }}" method="post">
-    <button type="submit" class="btn btn-danger">Clear All Favorites</button>
-</form>
-<div class="favorite-list">
-    {% for favorite in favorites %}
-        <div class="favorite-item">
-            <h2><a href="{{ path('film_detail', {'id': favorite.filmId}) }}">{{ favorite.titre }}</a></h2>
-            <p>Added on: {{ favorite.dateDeCreation|date('Y-m-d') }}</p>
-            {% set tmdbBaseUrl = 'https://image.tmdb.org/t/p/w200/' %}
-            {% set imageUrl = tmdbBaseUrl ~ favorite.filmId %}
-            <img src="{{ imageUrl }}" alt="{{ favorite.titre }} Poster" style="max-width: 200px; height: auto;">
-            <form action="{{ path('favorite_delete', {'id': favorite.id}) }}" method="post">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ favorite.id) }}">
-                <button type="submit" class="btn btn-danger">Remove from Favorites</button>
-            </form>
-        </div>
-    {% endfor %}
+<div class="container">
+    <h1>Mes Films Favoris</h1>
+    <form action="{{ path('favorite_clear') }}" method="post" class="clear-favorites-form">
+        <button type="submit" class="btn btn-danger">Effacer Tous les Favoris</button>
+    </form>
+    <div class="grid-container">
+        {% if favorites|length > 0 %}
+            {% for favorite in favorites %}
+                <div class="card">
+                    <a href="{{ path('film_detail', {'id': favorite.filmId}) }}"><img src="https://image.tmdb.org/t/p/w300{{ favorite.chemin }}" class="card-img-top" alt="{{ favorite.titre }}"></a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ favorite.titre }}</h5>
+                        <p>Added on: {{ favorite.dateDeCreation|date('Y-m-d') }}</p>
+                        <a href="{{ path('film_detail', {'id': favorite.filmId}) }}" class="btn btn-primary">Détails</a>
+                        <form action="{{ path('favorite_delete', {'id': favorite.filmId}) }}" method="post" class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ favorite.filmId) }}">
+                            <input type="hidden" name="redirect_url" value="{{ app.request.uri }}">
+                            <button type="submit" class="btn btn-danger">Retirer des Favoris</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun film favori trouvé pour cette page.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

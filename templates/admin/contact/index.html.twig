@@ -1,16 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Admin Contacts{% endblock %}
 
-{% block body %}
+{% block admin %}
     <h1>List of Contacts</h1>
     
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Object</th>
-                <th>Body</th>
                 <th>Sent Date</th>
                 <th>Email</th>
                 <th>Action</th>
@@ -20,13 +18,10 @@
             {% for contact in contacts %}
                 <tr>
                     <td>{{ contact.id }}</td>
-                    <td>{{ contact.objet }}</td>
-                    <td>{{ contact.corps }}</td>
                     <td>{{ contact.dateDenvoie ? contact.dateDenvoie|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ contact.email }}</td>
                     <td>
-                        <a href="{{ path('admin_contact_respond', {'id': contact.id}) }}" class="btn btn-primary">Respond</a>
-                        {# Add other actions if needed #}
+                        <a href="{{ path('admin_contact_view', {'id': contact.id}) }}" class="btn btn-primary">Voir</a>
                     </td>
                 </tr>
             {% endfor %}

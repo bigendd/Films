@@ -1,0 +1,57 @@
+{# layout/main_menu.html.twig #}
+<nav>
+    <div class="container-fluid">
+        <a class="logo" href="{{ path('film_list') }}">MyApp</a>
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="navbar-collapse">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('profile_view') }}">Profile</a>
+                <a href="{{ path('favorite_list') }}">Mes Favoris</a>
+                <a href="{{ path('app_contact_new') }}">Contactez-nous</a>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_dashboard') }}">Admin</a>
+                {% endif %}
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Inscription</a>
+                <a href="{{ path('app_contact_new') }}">Contactez-nous</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<script>
+// scripts.js
+// scripts.js
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    const nav = document.querySelector('nav'); // Sélectionne l'élément nav pour détecter les clics en dehors
+
+    menuToggle.addEventListener('click', (event) => {
+        event.stopPropagation(); // Empêche le clic sur le bouton burger de se propager
+        menuToggle.classList.toggle('open');
+        navbarCollapse.classList.toggle('open');
+    });
+
+    // Ajoute un gestionnaire d'événements pour détecter les clics en dehors de la navbar
+    document.addEventListener('click', (event) => {
+        if (!nav.contains(event.target)) { // Vérifie si le clic est en dehors de l'élément nav
+            menuToggle.classList.remove('open');
+            navbarCollapse.classList.remove('open');
+        }
+    });
+
+    // Empêche la fermeture du menu lorsqu'un clic se produit à l'intérieur de la navbar
+    navbarCollapse.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+});
+
+</script>

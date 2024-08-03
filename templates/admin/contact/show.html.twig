@@ -1,0 +1,32 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Contact Details{% endblock %}
+
+{% block admin %}
+    <h1>Contact Details</h1>
+    
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>{{ contact.id }}</td>
+            </tr>
+            <tr>
+                <th>Sent Date</th>
+                <td>{{ contact.dateDenvoie ? contact.dateDenvoie|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ contact.email }}</td>
+            </tr>
+            <tr>
+                <th>Message</th>
+                <td>{{ contact.corps }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_contact_index') }}" class="btn btn-secondary">Retourner a la liste</a>
+    <a href="{{ path('admin_contact_respond', {'id': contact.id}) }}" class="btn btn-primary">Repondre</a>
+
+{% endblock %}

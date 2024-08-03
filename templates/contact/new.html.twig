@@ -3,12 +3,14 @@
 {% block title %}Contact Us{% endblock %}
 
 {% block body %}
-    <h1>Contact Us</h1>
+<div class="container">
+    <h1>Contactez-Nous</h1>
 
     {{ form_start(form) }}
         {{ form_row(form.email) }}
         {{ form_row(form.objet) }}
         {{ form_row(form.corps) }}
-        <button class="btn btn-primary">Send</button>
+        <button class="btn btn-primary">Envoyer</button>
     {{ form_end(form) }}
+</div>
 {% endblock %}

@@ -3,36 +3,69 @@
 {% block title %}Liste des Films{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Liste des Films</h1>
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a href="{{ path('favorite_list') }}" class="btn btn-primary">Voir les films favoris</a>
-    {% endif %}
 
-    <form action="{{ path('film_list') }}" method="get" class="form-inline mb-4">
-        <input type="text" name="search" placeholder="Rechercher..." class="form-control mr-sm-2" value="{{ searchQuery }}">
-        <button type="submit" class="btn btn-primary">Rechercher</button>
+    <form id="search-form" action="{{ path('film_list') }}" method="get" class="form-inline">
+        <div class="bloc">
+            <input type="text" id="search-input" name="search" placeholder="Rechercher..." class="form-control" value="{{ searchQuery }}">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+
+        <div id="suggestions"></div>
     </form>
 
- <div class="row">
-    {% if films.items|length > 0 %}
-        {% for film in films.items %}
-            <div class="col-md-4 mb-4">
+    <div class="genre">
+        {% for genre in genres %}
+            <a href="{{ path('film_list', {'genre': genre.id}) }}" class="btn btn-secondary">{{ genre.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="buttons">
+        <a href="{{ path('film_list', {'type': 'upcoming'}) }}" class="btn btn-success">Films à venir</a>
+        <a href="{{ path('film_list', {'type': 'top_rated'}) }}" class="btn btn-success">Films les mieux notés</a>
+        <a href="{{ path('film_list', {'type': 'popular'}) }}" class="btn btn-success">Films populaires</a>
+    </div>
+
+    <div class="genre-select">
+        <select id="genre-select" class="form-control">
+            <option value="">Sélectionner un genre</option>
+            {% for genre in genres %}
+                <option value="{{ path('film_list', {'genre': genre.id}) }}">{{ genre.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="grid-container">
+        {% if films|length > 0 %}
+            {% for film in films %}
                 <div class="card">
-                    <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" class="card-img-top" alt="{{ film.title }}">
+                    <a href="{{ path('film_detail', {'id': film.id}) }}"><img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" class="card-img-top" alt="{{ film.title }}"></a>
                     <div class="card-body">
                         <h5 class="card-title">{{ film.title }}</h5>
-                        <p class="card-text">{{ film.overview }}</p>
+                        <p>Date de sortie: {{ film.release_date }}</p>
                         <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-primary">Détails</a>
-                        <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-success">Ajouter aux favoris</button>
-                        </form>
+                        {% if film.id in favoriteMovieIds %}
+                            <form action="{{ path('favorite_delete', {'id': film.id}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ film.id) }}">
+                                <button type="submit" class="btn btn-danger">Retirer des favoris</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('add_favorite_' ~ film.id) }}">
+                                <button type="submit" class="btn btn-success">Ajouter aux favoris</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Aucun film trouvé pour cette page.</p>
-    {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Aucun film trouvé pour cette page.</p>
+        {% endif %}
+    </div>
 </div>
+{% endblock %}
 
+{% block javascript %}
+    <script src="{{ asset('asset/js/page.js') }}"></script>
 {% endblock %}

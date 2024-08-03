@@ -1,0 +1,272 @@
+@import "variable";
+@import "menu";
+@import "footer";
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family;
+  background-color: $background-color;
+  color: $text-color;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: $background-color;
+  box-shadow: $box-shadow;
+  /* public/css/styles.css */
+
+  /* public/css/styles.css */
+
+#backToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background-color: #555;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity .5s ease-in-out; /* Smooth transition over 5 seconds */
+}
+
+#backToTopBtn.show {
+    opacity: 1;
+}
+
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .film-details {
+    display: flex;
+    flex-direction: row;
+    gap: $grid-gap;
+    margin-bottom: 30px;
+    align-items: center;
+
+    .film-poster {
+      flex: 1;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+    }
+
+    .film-info {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      p {
+        margin: 5px 0;
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  // Video Container
+  .video-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    iframe {
+      width: 720px;
+      height: 405px;
+      border: none;
+      border-radius: 4px;
+    }
+  }
+
+  .directors,
+  .actors {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $grid-gap;
+
+    .director,
+    .actor {
+      text-align: center;
+      max-width: 150px;
+
+      img {
+        border-radius: 50%;
+        max-width: 100%;
+        height: auto;
+      }
+
+      p {
+        margin-top: 5px;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .recommendations {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $grid-gap;
+
+    .recommendation {
+      text-align: center;
+      flex: 1 1 $image-size;
+      max-width: 150px;
+
+      a {
+        display: block;
+        text-decoration: none;
+        color: $text-color;
+        position: relative;
+
+        .image-wrapper {
+          height: $image-size;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          transition: transform 0.3s ease;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center;
+          }
+        }
+
+        &:hover .image-wrapper {
+          transform: scale(1.05);
+        }
+
+        h3 {
+          margin-top: 10px;
+          font-size: 1rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-family: $font-title;
+        }
+      }
+    }
+  }
+
+  .avis {
+    border-top: 1px solid $card-border-color;
+    padding-top: 20px;
+    margin-top: 20px;
+
+    p {
+      margin: 5px 0;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+  }
+}
+
+.btn {
+  display: inline-block;
+  font-size: 1rem;
+  padding: $btn-padding;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px;
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: #fff;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &.btn-secondary {
+    background-color: $secondary-color;
+    color: #fff;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+
+  &.btn-success {
+    background-color: #28a745;
+    color: #fff;
+
+    &:hover {
+      background-color: darken(#28a745, 10%);
+    }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+
+    &:hover {
+      background-color: darken(#dc3545, 10%);
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .container .film-details {
+    flex-direction: column;
+  }
+
+  .recommendations,
+  .directors,
+  .actors {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .film-info {
+    .actors,
+    .directors {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  }
+
+  .video-container {
+    margin-top: 30px;
+
+    iframe {
+      width: 560px;
+      height: 315px;
+    }
+  }
+}

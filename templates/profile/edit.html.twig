@@ -5,6 +5,7 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Edit Profile</h1>
 
     {{ form_start(form) }}
@@ -15,4 +16,5 @@
         {{ form_row(form.numeroDeTelephone) }}
         <button class="btn">Save changes</button>
     {{ form_end(form) }}
+</div>
 {% endblock %}

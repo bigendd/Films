@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +19,13 @@ class ContactType extends AbstractType
                 'label' => 'Email',
                 'required' => !$options['is_authenticated'], // Non requis si l'utilisateur est authentifié
             ])
-            ->add('objet')
-            ->add('corps');
+            ->add('objet', TextType::class, [
+                'label' => 'Objet',
+            ])
+            ->add('corps', TextareaType::class, [
+                'label' => 'Message',
+                'attr' => ['class' => 'form-control', 'rows' => 5], // Ajout de la classe form-control et de rows
+            ]);
         // Ajoutez d'autres champs de formulaire si nécessaire
     }
 

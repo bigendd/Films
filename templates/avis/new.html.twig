@@ -2,10 +2,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Add a Review</h1>
+<div class="container"> 
+<h1>Ajouter un nouveau commentaire</h1>
 
 {{ form_start(form) }}
     {{ form_row(form.commentaire) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+</div>
 {% endblock %}

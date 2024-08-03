@@ -30,6 +30,9 @@ class Favoris
     #[ORM\Column(length: 150)]
     private ?string $titre = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $chemin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class Favoris
     public function setTitre(string $titre): static
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getChemin(): ?string
+    {
+        return $this->chemin;
+    }
+
+    public function setChemin(string $chemin): static
+    {
+        $this->chemin = $chemin;
 
         return $this;
     }

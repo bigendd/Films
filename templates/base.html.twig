@@ -1,20 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-            <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
-</head>
-<body>
-{% if signalement is defined %}
-        {% include 'navbar.html.twig' with {'signalement': signalement} %}
-    {% else %}
-        {% include 'navbar.html.twig' %}
-    {% endif %}
-        <div class="container mt-4">
-        {% block body %}{% endblock %}
-    </div>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>⚫️</text><text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text></svg>">
+        
+        <!-- Inclure les feuilles de style CSS -->
+        
+        {% if current_route == 'film_list' %}
+            <link rel="stylesheet" href="{{ asset('asset/css/film.css') }}">
+        {% elseif current_route == 'film_details' %}
+            <link rel="stylesheet" href="{{ asset('asset/css/film_details.css') }}">
+        {% elseif current_route == 'admin' %}
+            <link rel="stylesheet" href="{{ asset('asset/css/admin.css') }}">
+        {% elseif current_route == 'formulaire' %}
+            <link rel="stylesheet" href="{{ asset('asset/css/form.css') }}">
+        {% elseif current_route == 'film_favorie' %}
+            <link rel="stylesheet" href="{{ asset('asset/css/film_favorie.css') }}">
+        {% endif %}
+        
+        <!-- Inclure FontAwesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-</body>
+    </head>
+    <body>
+        {% block nav %}
+            {% include 'layout/menu.top.twig' %}
+        {% endblock %}
+        {% block body %}
+            <!-- Contenu de la page -->
+
+        {% endblock %}
+        {% block footer %}
+            {% include 'layout/menu.butom.twig' %}
+        {% endblock %}
+        <!-- Scripts JavaScript si nécessaire -->
+{% block javascript %}
+    <script src="{{ asset('asset/js/app.js') }}"></script>
+{% endblock %}
+    </body>
 </html>

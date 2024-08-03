@@ -2,76 +2,171 @@
 
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ film.title }}{% endblock %}
+
+
 {% block body %}
-<div class="container">
-    <h1>{{ film.title }}</h1>
 
-    <div class="film-details">
-        <div class="film-poster">
-            <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
+    <div class="container">
+        <a href="{{ path('film_list') }}" class="btn btn-primary">&loarr;</a>
+
+        <h1>{{ film.title }}</h1>
+
+        <div class="film-details">
+            <div class="film-poster">
+                <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
+            </div>
+            <div class="film-info">
+                <p>{{ film.overview }}</p>
+                <p>Date de sortie: {{ film.release_date }}</p>
+                <p>Durée: {{ film.runtime }} minutes</p>
+                <p>Note: {{ film.vote_average }} ({{ film.vote_count }} votes)</p>
+                <p>Langue originale: {{ film.original_language }}</p>
+                <p>Titre original: {{ film.original_title }}</p>
+                <p>Status: {{ film.status }}</p>
+                <p>Budget: {{ film.budget | number_format(0, ',', ' ') }} $</p>
+                <p>Recettes: {{ film.revenue | number_format(0, ',', ' ') }} $</p>
+                <p>Genres:
+                    {% for genre in film.genres %}
+                        {{ genre.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p>Compagnies de production:
+                    {% for company in film.production_companies %}
+                        {{ company.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p>Pays de production:
+                    {% for country in film.production_countries %}
+                        {{ country.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p>Collection:
+                    {% if film.belongs_to_collection is not null %}
+                        {{ film.belongs_to_collection.name }}{% else %}N/A
+                    {% endif %}
+                </p>
+                <p>Site web officiel:
+                    {% if film.homepage is not empty %}
+                        <a href="{{ film.homepage }}" target="_blank">{{ film.homepage }}</a>
+                    {% else %}N/A
+                    {% endif %}
+                </p>
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if isFavorite %}
+                        <p>Ce film est dans vos favoris.</p>
+                    {% else %}
+                        <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
+                            <button type="submit" class="btn btn-secondary">Ajouter aux favoris</button>
+                        </form>
+                    {% endif %}
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('avis_new', {'filmId': film.id}) }}" class="btn btn-secondary">Ajouter un avis</a>
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
-        <div class="film-info">
-            <p>{{ film.overview }}</p>
-            <p>Date de sortie: {{ film.release_date }}</p>
-            <p>Note: {{ film.vote_average }}</p>
 
+        <h2>Bande-annonce</h2>
+        <div class="video-container">
+            {% set trailerFound = false %}
             {% if film.videos is not empty %}
-                <h2>Bande-annonce</h2>
-                {% set trailerFound = false %}
                 {% for video in film.videos %}
                     {% if video.type == 'Trailer' and not trailerFound %}
-                        <div class="video-container">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video.key }}" frameborder="0" allowfullscreen></iframe>
-                        </div>
+                        <iframe src="https://www.youtube.com/embed/{{ video.key }}" frameborder="0" allowfullscreen></iframe>
                         {% set trailerFound = true %}
                     {% endif %}
                 {% endfor %}
-                {% if not trailerFound %}
-                    <p>Aucune bande-annonce disponible.</p>
-                {% endif %}
+            {% endif %}
+            {% if not trailerFound %}
+                <p>Aucune bande-annonce disponible.</p>
+            {% endif %}
+        </div>
+
+        <h2>Réalisateur(s)</h2>
+        <div class="directors">
+            {% if film.directors is not empty %}
+                {% for director in film.directors %}
+                    <div class="director">
+                        {% if director.profile_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ director.profile_path }}" alt="{{ director.name }} photo">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200x300?text=No+Image" alt="{{ director.name }} photo par défaut">
+                        {% endif %}
+                        <p>{{ director.name }}</p>
+                    </div>
+                {% endfor %}
             {% else %}
-                <p>Aucune vidéo disponible.</p>
+                <p>Aucun réalisateur trouvé.</p>
             {% endif %}
+        </div>
 
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {% if isFavorite %}
-                    <p>Ce film est dans vos favoris.</p>
-                {% else %}
-                    <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
-                        <button type="submit" class="btn btn-secondary">Ajouter aux favoris</button>
+        <h2>Acteurs principaux</h2>
+        <div class="actors">
+            {% if film.cast is not empty %}
+                {% for actor in film.cast %}
+                    <div class="actor">
+                        {% if actor.profile_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ actor.profile_path }}" alt="{{ actor.name }} photo">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200x300?text=No+Image" alt="{{ actor.name }} photo par défaut">
+                        {% endif %}
+                        <p>{{ actor.name }} as {{ actor.character }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun acteur trouvé.</p>
+            {% endif %}
+        </div>
+
+     
+
+        <h2>Commentaire</h2>
+        {% for avi in avis %}
+            <div class="avis">
+                <p><strong>{{ avi.utilisateur.email }}:</strong></p>
+                <p>{{ avi.commentaire }}</p>
+                <p><small>Reviewed on {{ avi.dateDeCreation|date('Y-m-d H:i') }}</small></p>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and avi.utilisateur == app.user %}
+                    <a href="{{ path('avis_edit', {'id': avi.id}) }}" class="btn btn-secondary">Edit</a>
+                    <form action="{{ path('avis_delete', {'id': avi.id}) }}" method="post" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
+                {% elseif is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+                    <form action="{{ path('admin_avis_archive', {'id': avi.id}) }}" method="post" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ avi.id) }}">
+                        <button type="submit" class="btn btn-secondary">Archiver</button>
+                    </form>
+                {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('signalement_new', {'id': avi.id}) }}" class="btn btn-danger">Signaler</a>
                 {% endif %}
-                {% if not is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('avis_new', {'filmId': film.id}) }}" class="btn btn-secondary">Ajouter un avis</a>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
+            </div>
+        {% else %}
+            <p>Aucun avis pour l'instant.</p>
+        {% endfor %}
 
-    <h2>Commentaire</h2>
-    {% for avi in avis %}
-        <div class="avis">
-            <p><strong>{{ avi.utilisateur.email }}:</strong></p>
-            <p>{{ avi.commentaire }}</p>
-            <p><small>Reviewed on {{ avi.dateDeCreation|date('Y-m-d H:i') }}</small></p>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') and avi.utilisateur == app.user %}
-                <a href="{{ path('avis_edit', {'id': avi.id}) }}" class="btn btn-secondary">Edit</a>
-                <form action="{{ path('avis_delete', {'id': avi.id}) }}" method="post" style="display:inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            {% elseif is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
-                <form action="{{ path('avis_archive', {'id': avi.id}) }}" method="post" style="display:inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('archive' ~ avi.id) }}">
-                    <button type="submit" class="btn btn-secondary">Archiver</button>
-                </form>
-            {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('signalement_new', {'id': avi.id}) }}" class="btn btn-danger">Signaler</a>
+        <h2>Recommandations</h2>
+        <div class="recommendations">
+            {% if film.recommendations is not empty %}
+                {% for recommendation in film.recommendations %}
+                    <div class="recommendation">
+                        <a href="{{ path('film_detail', {'id': recommendation.id}) }}">
+                            <div class="image-wrapper">
+                                <img src="https://image.tmdb.org/t/p/w200{{ recommendation.poster_path }}" alt="{{ recommendation.title }} poster">
+                            </div>
+                            <h3>{{ recommendation.title }}</h3>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucune recommandation trouvée.</p>
             {% endif %}
         </div>
-        
-    {% else %}
-        <p>Aucun avis pour l'instant.</p>
-    {% endfor %}
-</div>
+        <button id="backToTopBtn" class="btn btn-secondary">&#8679;</button>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script src="{{ asset('asset/js/app.js') }}"></script>
 {% endblock %}

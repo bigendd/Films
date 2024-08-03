@@ -1,0 +1,38 @@
+{# layout/admin_nav.html.twig #}
+
+
+
+<nav class="admin-nav">
+    <ul>
+        <details>
+            <summary>Archives</summary>
+            <div>
+                <a href="{{ path('app_archive_section', {'type': 'avis'}) }}">Archive Avis</a>
+                <a href="{{ path('app_archive_section', {'type': 'bannissement'}) }}">Archive Bannissement</a>
+                <a href="{{ path('app_archive_section', {'type': 'signalement'}) }}">Archive Signalement</a>
+                <a href="{{ path('app_archive_section', {'type': 'contact'}) }}">Archive Contact</a>
+            </div>
+        </details>
+        <li>
+            <a href="{{ path('admin_bannissement_index') }}">Bannissement</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_avis_index') }}">Avis</a>
+        </li>
+        <li>
+            <a href="{{ path('admin_contact_index') }}">Contact</a>
+        </li>
+       
+            <li>
+                <a href="{{ path('admin_signalement_index') }}">Signalement</a>
+            </li>
+        
+        <li>
+            <a href="{{ path('admin_bannissement_index') }}">Bannissement</a>
+        </li>
+
+        <li>
+            <a href="{{ path('admin_users') }}">Utilisateur</a>
+        </li>
+    </ul>
+</nav>

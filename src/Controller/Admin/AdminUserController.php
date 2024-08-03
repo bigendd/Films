@@ -26,8 +26,9 @@ class AdminUserController extends AbstractController
             ];
         }
 
-        return $this->render('admin_user/index.html.twig', [
+        return $this->render('admin/utilisateur/index.html.twig', [
             'users' => $usersWithBanStatus,
+            'current_route' => 'admin', 
         ]);
     }
 }

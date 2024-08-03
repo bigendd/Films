@@ -1,0 +1,343 @@
+@charset "UTF-8";
+nav {
+  background-color: #ffffff;
+  padding: 10px 0;
+  position: relative;
+}
+nav .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+}
+nav .logo {
+  text-decoration: none;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+}
+nav .menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  font-size: 24px; /* Ajuste la taille des icônes */
+  color: #333;
+  transition: color 0.3s ease;
+}
+nav .menu-toggle .fa-bars {
+  display: block;
+}
+nav .menu-toggle .fa-xmark {
+  display: none;
+}
+nav .menu-toggle.open .fa-bars {
+  display: none;
+}
+nav .menu-toggle.open .fa-xmark {
+  display: block;
+}
+nav .menu-toggle:focus {
+  outline: none;
+}
+nav .navbar-collapse {
+  display: flex;
+  align-items: center;
+}
+nav .navbar-collapse a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  transition: color 0.3s ease;
+}
+nav .navbar-collapse a:hover {
+  color: #007bff;
+}
+@media (max-width: 768px) {
+  nav {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  nav .navbar-collapse {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
+  }
+  nav .navbar-collapse a {
+    padding: 10px;
+    font-size: 18px;
+  }
+  nav .navbar-collapse.open {
+    display: flex;
+  }
+  nav .menu-toggle {
+    display: block;
+  }
+}
+
+footer .footer-content {
+  text-align: center;
+  padding: 1em 0;
+  background-color: #333;
+  color: white;
+  position: absolute;
+  width: 100%;
+}
+footer .footer-content a {
+  color: #fff;
+  text-decoration: none;
+}
+footer .footer-content a:hover {
+  text-decoration: underline;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* public/css/styles.css */
+  /* public/css/styles.css */
+}
+.container #backToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  background-color: #555;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; /* Smooth transition over 5 seconds */
+}
+.container #backToTopBtn.show {
+  opacity: 1;
+}
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.container .film-details {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+.container .film-details .film-poster {
+  flex: 1;
+}
+.container .film-details .film-poster img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.container .film-details .film-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container .film-details .film-info p {
+  margin: 5px 0;
+}
+.container .film-details .film-info a {
+  color: white;
+  text-decoration: none;
+}
+.container .film-details .film-info a:hover {
+  text-decoration: underline;
+}
+.container .video-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.container .video-container iframe {
+  width: 720px;
+  height: 405px;
+  border: none;
+  border-radius: 4px;
+}
+.container .directors,
+.container .actors {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.container .directors .director,
+.container .directors .actor,
+.container .actors .director,
+.container .actors .actor {
+  text-align: center;
+  max-width: 150px;
+}
+.container .directors .director img,
+.container .directors .actor img,
+.container .actors .director img,
+.container .actors .actor img {
+  border-radius: 50%;
+  max-width: 100%;
+  height: auto;
+}
+.container .directors .director p,
+.container .directors .actor p,
+.container .actors .director p,
+.container .actors .actor p {
+  margin-top: 5px;
+  font-size: 0.875rem;
+}
+.container .recommendations {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.container .recommendations .recommendation {
+  text-align: center;
+  flex: 1 1 200px;
+  max-width: 150px;
+}
+.container .recommendations .recommendation a {
+  display: block;
+  text-decoration: none;
+  color: #333;
+  position: relative;
+}
+.container .recommendations .recommendation a .image-wrapper {
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+.container .recommendations .recommendation a .image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.container .recommendations .recommendation a:hover .image-wrapper {
+  transform: scale(1.05);
+}
+.container .recommendations .recommendation a h3 {
+  margin-top: 10px;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "Lora", serif;
+}
+.container .avis {
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.container .avis p {
+  margin: 5px 0;
+}
+.container .avis .btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px;
+}
+.btn.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+.btn.btn-primary:hover {
+  background-color: #0062cc;
+}
+.btn.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+.btn.btn-secondary:hover {
+  background-color: #545b62;
+}
+.btn.btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+.btn.btn-success:hover {
+  background-color: #1e7e34;
+}
+.btn.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+.btn.btn-danger:hover {
+  background-color: #bd2130;
+}
+
+@media (max-width: 1200px) {
+  .container .film-details {
+    flex-direction: column;
+  }
+  .recommendations,
+  .directors,
+  .actors {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+@media (max-width: 768px) {
+  .film-info .actors,
+  .film-info .directors {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  .video-container {
+    margin-top: 30px;
+  }
+  .video-container iframe {
+    width: 560px;
+    height: 315px;
+  }
+}
+
+/*# sourceMappingURL=film_details.css.map */

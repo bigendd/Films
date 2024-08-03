@@ -1,0 +1,38 @@
+body {
+    font-family: $font-family;
+    background-color: $background-color;
+    color: $text-color;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: $box-shadow;
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+}
+
+
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    }
+
+    .movie-item {
+        margin-bottom: 20px;
+    }
+}
