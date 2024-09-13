@@ -7,7 +7,7 @@
 
 {% block body %}
 
-    <div class="container">
+    <main class="container">
         <a href="{{ path('film_list') }}" class="btn btn-primary">&loarr;</a>
 
         <h1>{{ film.title }}</h1>
@@ -58,7 +58,7 @@
                         <p>Ce film est dans vos favoris.</p>
                     {% else %}
                         <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post">
-                            <button type="submit" class="btn btn-secondary">Ajouter aux favoris</button>
+                            <button type="submit" class="btn btn-primary">Ajouter aux favoris</button>
                         </form>
                     {% endif %}
                     {% if not is_granted('ROLE_ADMIN') %}
@@ -165,7 +165,7 @@
             {% endif %}
         </div>
         <button id="backToTopBtn" class="btn btn-secondary">&#8679;</button>
-    </div>
+    </main>
 {% endblock %}
 {% block javascript %}
     <script src="{{ asset('asset/js/app.js') }}"></script>

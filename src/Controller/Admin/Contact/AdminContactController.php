@@ -1,17 +1,10 @@
 <?php
-// src/Controller/Admin/AdminContactController.php
 
 namespace App\Controller\Admin\Contact;
 
-use App\Entity\Contact;
-use App\Form\ResponseType;
 use App\Repository\ContactRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin/contact')]
@@ -20,14 +13,13 @@ class AdminContactController extends AbstractController
     #[Route('/', name: 'admin_contact_index', methods: ['GET'])]
     public function index(ContactRepository $contactRepository): Response
     {
-
-        // Récupérer uniquement les contacts non archivés (statut = 0)
+        // On récupère les contacts qui ne sont pas archivés (statut = 0)
         $contacts = $contactRepository->findBy(['statut' => 0]);
 
+        // On rend la vue pour afficher la liste des contacts
         return $this->render('admin/contact/index.html.twig', [
-            'contacts' => $contacts,
-            'current_route' => 'admin', 
+            'contacts' => $contacts,  // Les contacts à afficher
+            'current_route' => 'admin',  // La route actuelle pour la vue
         ]);
     }
-
 }

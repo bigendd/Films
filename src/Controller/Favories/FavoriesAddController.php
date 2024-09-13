@@ -6,7 +6,6 @@ use App\Entity\Favoris;
 use App\Service\TmdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,7 +22,7 @@ class FavoriesAddController extends AbstractController
     }
 
     #[Route('/film/{id}/favorite', name: 'film_add_favorite', methods: ['POST'])]
-    public function addFavorite(int $id, Request $request): Response
+    public function addFavorite(int $id): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -54,5 +53,5 @@ class FavoriesAddController extends AbstractController
         $this->entityManager->persist($favoris);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('favorite_list');    }
+        return $this->redirectToRoute('film_list');   }
 }

@@ -17,41 +17,37 @@ class ContactController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $contact = new Contact();
-    
+
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $user = $this->getUser();
-    
-            // Vérifiez que $user est bien un objet et a une méthode getEmail()
+
             if (method_exists($user, 'getEmail')) {
                 $contact->setUtilisateur($user);
                 $contact->setEmail($user->getEmail());
             } else {
-                // Gérer le cas où getEmail() n'est pas défini
                 throw new \RuntimeException('La méthode getEmail() n\'est pas définie pour l\'utilisateur.');
             }
         }
-    
+
         $form = $this->createForm(ContactType::class, $contact, [
             'is_authenticated' => $this->isGranted('IS_AUTHENTICATED_FULLY'),
         ]);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             $contact->setDateDenvoie(new \DateTime());
             $contact->setStatut(false);
-    
+
             $entityManager->persist($contact);
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('app_contact_new');
         }
-    
+
         return $this->render('contact/new.html.twig', [
             'form' => $form->createView(),
-            'current_route' => 'formulaire', 
+            'current_route' => 'formulaire',
 
         ]);
     }
-    
-
 }

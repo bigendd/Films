@@ -34,7 +34,7 @@ class Bannissement
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
-    #[ORM\Column(type: Types::STRING, length: 10)]
+    #[ORM\Column(type: Types::STRING, length: 10,  nullable: true)]
     private ?string $duree = null; // Nouvelle propriété
 
     public function __construct()
@@ -113,18 +113,18 @@ class Bannissement
         return $this;
     }
 
-    public function getDuree(): ?string // Nouvelle méthode getter
+    public function getDuree(): ?string 
     {
         return $this->duree;
     }
 
-    public function setDuree(string $duree): static // Nouvelle méthode setter
+    public function setDuree(string $duree): static 
     {
         $this->duree = $duree;
         return $this;
     }
 
-    public function getRemainingDays(): ?int // Nouvelle méthode pour calculer les jours restants
+    public function getRemainingDays(): ?int 
     {
         if ($this->dateFin) {
             $now = new \DateTime();
@@ -144,6 +144,15 @@ class Bannissement
             return true;
         }
 
+        return false;
+    }
+    public function isBannissementExpired(): bool
+    {
+        if ($this->dateFin !== null) {
+            $now = new \DateTime();
+            // Vérifie si la date de fin du bannissement est passée
+            return $this->dateFin <= $now;
+        }
         return false;
     }
 }

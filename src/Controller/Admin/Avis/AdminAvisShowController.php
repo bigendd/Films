@@ -7,37 +7,32 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\MailerInterface;
 
 class AdminAvisShowController extends AbstractController
 {
     private $entityManager;
-    private $mailer;
 
-    public function __construct(EntityManagerInterface $entityManager, MailerInterface $mailer)
+    // On injecte l'EntityManager dans le contrôleur pour pouvoir accéder aux données
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
     }
-
-  
 
     #[Route('/admin/avis/{id}', name: 'admin_avis_show', methods: ['GET'])]
     public function show(int $id): Response
     {
+        // On cherche l'avis avec l'id donné
         $avis = $this->entityManager->getRepository(Avis::class)->find($id);
 
+        // Si l'avis n'existe pas, on lance une erreur
         if (!$avis) {
             throw $this->createNotFoundException('Avis non trouvé');
         }
 
+        // On rend la vue pour afficher les détails de l'avis
         return $this->render('admin/avis/show.html.twig', [
-            'avis' => $avis,
-            'current_route' => 'admin', 
-
+            'avis' => $avis,  // Les détails de l'avis à afficher
+            'current_route' => 'admin',  // La route actuelle pour la vue
         ]);
     }
-
 }

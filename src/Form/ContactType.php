@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Contact;
@@ -14,26 +13,27 @@ class ContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('email', EmailType::class, [
+        if (!$options['is_authenticated']) {
+            $builder->add('email', EmailType::class, [
                 'label' => 'Email',
-                'required' => !$options['is_authenticated'], // Non requis si l'utilisateur est authentifié
-            ])
+            ]);
+        }
+
+        $builder
             ->add('objet', TextType::class, [
                 'label' => 'Objet',
             ])
             ->add('corps', TextareaType::class, [
                 'label' => 'Message',
-                'attr' => ['class' => 'form-control', 'rows' => 5], // Ajout de la classe form-control et de rows
+                'attr' => ['class' => 'form-control', 'rows' => 5],
             ]);
-        // Ajoutez d'autres champs de formulaire si nécessaire
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Contact::class,
-            'is_authenticated' => false, // Valeur par défaut
+            'is_authenticated' => false, // Default value
         ]);
     }
 }

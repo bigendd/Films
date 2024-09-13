@@ -6,7 +6,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>⚫️</text><text y='1.3em' x='0.2em' font-size='76' fill='#fff'>sf</text></svg>">
         
-        <!-- Inclure les feuilles de style CSS -->
+        <!-- les feuilles de style CSS -->
         
         {% if current_route == 'film_list' %}
             <link rel="stylesheet" href="{{ asset('asset/css/film.css') }}">
@@ -20,7 +20,6 @@
             <link rel="stylesheet" href="{{ asset('asset/css/film_favorie.css') }}">
         {% endif %}
         
-        <!-- Inclure FontAwesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     </head>
@@ -29,15 +28,21 @@
             {% include 'layout/menu.top.twig' %}
         {% endblock %}
         {% block body %}
-            <!-- Contenu de la page -->
+        <!-- Affichage des messages flash -->
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
 
         {% endblock %}
         {% block footer %}
             {% include 'layout/menu.butom.twig' %}
         {% endblock %}
-        <!-- Scripts JavaScript si nécessaire -->
 {% block javascript %}
-    <script src="{{ asset('asset/js/app.js') }}"></script>
+
 {% endblock %}
     </body>
 </html>

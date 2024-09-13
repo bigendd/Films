@@ -7,7 +7,7 @@
 
     {{ include('admin/bannissement/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('admin_bannissement_index') }}">back to list</a>
+    <a href="{{ path('admin_bannissement_index') }}" class="btn btn-primary">Retour a la liste</a>
 
     {{ include('admin/bannissement/_delete_form.html.twig') }}
 {% endblock %}

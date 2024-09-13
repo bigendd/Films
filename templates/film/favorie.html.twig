@@ -2,7 +2,7 @@
 {% block title %}Mes Favoris{% endblock %}
 
 {% block body %}
-<div class="container">
+<main class="container">
     <h1>Mes Films Favoris</h1>
     <form action="{{ path('favorite_clear') }}" method="post" class="clear-favorites-form">
         <button type="submit" class="btn btn-danger">Effacer Tous les Favoris</button>
@@ -28,5 +28,11 @@
             <p>Aucun film favori trouvé pour cette page.</p>
         {% endif %}
     </div>
-</div>
+            <button id="backToTopBtn" class="btn btn-secondary">&#8679;</button>
+
+</main>
 {% endblock %}
+{% block javascript %}
+    <script src="{{ asset('asset/js/app.js') }}"></script>
+{% endblock %}
+

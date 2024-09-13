@@ -13,7 +13,7 @@ class ReponseType extends AbstractType
         $builder
             ->add('reponse', TextareaType::class, [
                 'required' => true,
-                'attr' => ['class' => 'form-control', 'rows' => 5], // Ajout de la classe form-control et de rows
+                'attr' => ['class' => 'form-control', 'rows' => 5], 
             ]);
     }
 

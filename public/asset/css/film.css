@@ -14,10 +14,7 @@ nav .container-fluid {
   position: relative;
 }
 nav .logo {
-  text-decoration: none;
-  color: #333;
-  font-size: 24px;
-  font-weight: bold;
+  width: 60px;
 }
 nav .menu-toggle {
   display: none;
@@ -26,7 +23,7 @@ nav .menu-toggle {
   cursor: pointer;
   padding: 10px;
   position: relative;
-  font-size: 24px; /* Ajuste la taille des icônes */
+  font-size: 24px;
   color: #333;
   transition: color 0.3s ease;
 }
@@ -56,7 +53,7 @@ nav .navbar-collapse a {
   transition: color 0.3s ease;
 }
 nav .navbar-collapse a:hover {
-  color: #007bff;
+  color: #aaa2d8;
 }
 @media (max-width: 768px) {
   nav {
@@ -72,7 +69,7 @@ nav .navbar-collapse a:hover {
     top: 50px;
     left: 0;
     right: 0;
-    background-color: #ffffff;
+    background-color: #fff;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     padding: 10px;
     z-index: 1;
@@ -105,6 +102,52 @@ footer .footer-content a:hover {
   text-decoration: underline;
 }
 
+.btn {
+  display: inline-block;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px;
+  padding: 10px 15px;
+  text-decoration: none;
+}
+.btn.btn-primary {
+  background-color: #aaa2d8;
+  color: #fff;
+}
+.btn.btn-primary:hover {
+  background-color: #897ec9;
+}
+.btn.btn-secondary {
+  background-color: #604d9e;
+  color: #fff;
+  text-decoration: none;
+}
+.btn.btn-secondary:hover {
+  background-color: #4b3c7c;
+}
+.btn.btn-success {
+  background-color: #2c1b47;
+  color: #fff;
+}
+.btn.btn-success:hover {
+  background-color: #150d22;
+}
+.btn.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+.btn.btn-danger:hover {
+  background-color: #bd2130;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   background-color: #f4f4f4;
@@ -119,21 +162,42 @@ body {
   padding: 20px;
   background-color: #f4f4f4;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-height: 465px;
 }
 .container h1 {
+  text-align: center;
   font-size: 2rem;
   margin-bottom: 20px;
 }
-.container #search-form {
+
+#backToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  background-color: #555;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#backToTopBtn.show {
+  opacity: 1;
+}
+
+#search-form {
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
 }
-.container #search-form .bloc {
+#search-form .bloc {
   display: flex;
   flex-direction: row;
 }
-.container #search-form .form-control {
+#search-form .form-control {
   padding: 10px;
   font-size: 1rem;
   border-radius: 4px;
@@ -141,21 +205,28 @@ body {
   flex: 1;
   min-width: 200px;
 }
-.container #search-form #suggestions {
+#search-form #suggestions {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.container .genre {
+#search-form #suggestions .suggestion-item {
+  padding: 8px; /* Espace interne autour du texte */
+  cursor: pointer; /* Curseur "cliquable" */
+  border-bottom: 1px solid #eee; /* Ligne de séparation entre chaque suggestion */
+}
+
+.genre {
   margin-bottom: 30px;
   text-align: center;
 }
-.container .grid-container {
+
+.grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
-.container .grid-container .card {
+.grid-container .card {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -165,32 +236,33 @@ body {
   flex-direction: column;
   transition: box-shadow 0.3s ease;
 }
-.container .grid-container .card:hover {
+.grid-container .card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.container .grid-container .card .card-img-top {
+.grid-container .card .card-img-top {
   width: 100%;
-  height: auto;
+  height: 410px;
   display: block;
 }
-.container .grid-container .card .card-body {
+.grid-container .card .card-body {
   display: flex;
   flex-direction: column;
   padding: 15px;
   flex: 1;
   text-align: center;
 }
-.container .grid-container .card .card-body .card-title {
+.grid-container .card .card-body .card-title {
   font-size: 1.25rem;
   margin-bottom: 10px;
   flex-grow: 1;
 }
-.container .grid-container .card .card-body p {
+.grid-container .card .card-body p {
   font-size: 0.875rem;
   color: #333;
   margin-bottom: 15px;
 }
-.container .buttons {
+
+.buttons {
   text-align: center;
 }
 
@@ -234,47 +306,6 @@ body {
   .genre-select {
     display: block;
   }
-}
-.btn {
-  display: inline-block;
-  font-size: 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  margin: 5px;
-  padding: 10px 15px;
-  text-decoration: none;
-}
-.btn.btn-primary {
-  background-color: #007bff;
-  color: #fff;
-}
-.btn.btn-primary:hover {
-  background-color: #0062cc;
-}
-.btn.btn-secondary {
-  background-color: #6c757d;
-  color: #fff;
-  text-decoration: none;
-}
-.btn.btn-secondary:hover {
-  background-color: #545b62;
-}
-.btn.btn-success {
-  background-color: #28a745;
-  color: #fff;
-}
-.btn.btn-success:hover {
-  background-color: #1e7e34;
-}
-.btn.btn-danger {
-  background-color: #dc3545;
-  color: #fff;
-}
-.btn.btn-danger:hover {
-  background-color: #bd2130;
 }
 
 /*# sourceMappingURL=film.css.map */

@@ -1,9 +1,7 @@
 <?php
-// src/Controller/Film/FilmDetailsController.php
 
 namespace App\Controller\Film;
 
-use App\Entity\Avis;
 use App\Entity\Favoris;
 use App\Repository\AvisRepository;
 use App\Service\TmdbApiService;
@@ -47,13 +45,13 @@ class FilmDetailsController extends AbstractController
             $isFavorite = $favorite !== null;
         }
 
-        $avis = $this->avisRepository->findByFilmIdAndStatus($id, false); // Fetch reviews with statut 0
+        $avis = $this->avisRepository->findByFilmIdAndStatus($id, false);
 
         return $this->render('film/detail.html.twig', [
             'film' => $filmDetails,
             'isFavorite' => $isFavorite,
             'avis' => $avis,
-            'current_route' => 'film_details', 
+            'current_route' => 'film_details',
 
         ]);
     }

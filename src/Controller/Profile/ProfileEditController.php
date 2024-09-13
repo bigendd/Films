@@ -23,10 +23,8 @@ class ProfileEditController extends AbstractController
         /** @var Utilisateur $utilisateur */
         $utilisateur = $user;
 
-        // Récupérer InfoUtilisateur associé
         $infoUtilisateur = $em->getRepository(InfoUtilisateur::class)->findOneBy(['utilisateur' => $utilisateur]);
 
-        // Créer un InfoUtilisateur si n'existe pas
         if (!$infoUtilisateur) {
             $infoUtilisateur = new InfoUtilisateur();
             $infoUtilisateur->setUtilisateur($utilisateur);

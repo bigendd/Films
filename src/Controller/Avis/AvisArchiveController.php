@@ -2,23 +2,19 @@
 namespace App\Controller\Avis;
 
 use App\Entity\Avis;
-use App\Form\AvisType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\TmdbApiService;  // Ajoute ceci
 
 class AvisArchiveController extends AbstractController
 {
     private $entityManager;
-    private $tmdbApiService;  // Ajoute ceci
 
-    public function __construct(EntityManagerInterface $entityManager, TmdbApiService $tmdbApiService)  // Modifie ceci
+    public function __construct(EntityManagerInterface $entityManager)  
     {
         $this->entityManager = $entityManager;
-        $this->tmdbApiService = $tmdbApiService;  // Modifie ceci
     }
 
     #[Route('/avis/{id}/delete', name: 'avis_delete', methods: ['POST'])]

@@ -1,24 +1,32 @@
-// _variables.scss
+$primary-color: #aaa2d8;
 
-$primary-color: #007bff;
-$primary-hover-color: #0056b3;
-$secondary-color: #6c757d;
-$secondary-hover-color: #545b62;
+$secondary-color: #604d9e;
+
+$success-color: #2c1b47;
+
+$warning-color: #dc3545;
+
+$white-color: #fff;
+
 $background-color: #f4f4f4;
+
 $text-color: #333;
+
 $font-family: "Open Sans", sans-serif;
+
 $box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 $border-radius: 4px;
+
 $transition-ease: 0.3s ease;
 
-$card-bg-color: #fff;
 $card-border-color: #ddd;
+
 $card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-
-// Variables
-$btn-padding: 10px 15px;
 $grid-gap: 20px;
-$font-title: 'Lora', serif;
-$font-paragraph: 'Open Sans', sans-serif;
-$image-size: 200px; // Consistent size for recommendation images
+
+$font-title: "Lora", serif;
+
+$font-paragraph: "Open Sans", sans-serif;
+$image-size: 200px;

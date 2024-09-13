@@ -5,7 +5,7 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-<div class="container">
+<main class="container">
     <h1>Mon Profil</h1>
     <p><strong>Email :</strong> {{ utilisateur.email }}</p>
     {% if infoUtilisateur %}
@@ -17,6 +17,6 @@
     {% else %}
         <p>Aucune information utilisateur disponible.</p>
     {% endif %}
-    <a href="{{ path('profile_edit') }}" class="btn">Modifier le profil</a>
-</div>
+    <a href="{{ path('profile_edit') }}" class="btn btn-primary">Modifier le profil</a>
+</main>
 {% endblock %}

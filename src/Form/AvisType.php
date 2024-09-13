@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Avis;
-use App\Entity\Utilisateur;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +16,7 @@ class AvisType extends AbstractType
         $builder
     
         ->add('commentaire', TextareaType::class, [
-            'attr' => ['class' => 'form-control', 'rows' => 5], // Ajout de la classe form-control et de rows
+            'attr' => ['class' => 'form-control', 'rows' => 5], 
         ]);
     }
 

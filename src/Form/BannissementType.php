@@ -1,5 +1,4 @@
 <?php
-// src/Form/BannissementType.php
 
 namespace App\Form;
 
@@ -20,12 +19,12 @@ class BannissementType extends AbstractType
             ->add('utilisateur', EntityType::class, [
                 'class' => Utilisateur::class,
                 'choice_label' => 'email',
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('u')
-                        ->leftJoin('u.bannissement', 'b')
-                        ->where('b.id IS NULL OR b.dateFin < :now')
-                        ->setParameter('now', new \DateTime());
-                },
+                'query_builder' => function ($select) {
+                    return $select->createQueryBuilder('utilisateur')
+                        ->leftJoin('utilisateur.bannissement', 'ban')
+                        ->where('ban.statut = false')
+                        ->orWhere('ban.id IS NULL');
+                }
             ])
             ->add('duree', ChoiceType::class, [
                 'choices' => [

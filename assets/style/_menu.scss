@@ -1,110 +1,100 @@
-// variables.scss
-
 nav {
-    background-color: #ffffff;
-    padding: 10px 0;
-    position: relative; // Pour le placement par défaut
+  background-color: #ffffff;
+  padding: 10px 0;
+  position: relative;
 
-    .container-fluid {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        position: relative;
+  .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .logo {
+    width: 60px;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    font-size: 24px;
+    color: $text-color;
+    transition: color $transition-ease;
+
+    .fa-bars {
+      display: block;
     }
 
-    .logo {
-        text-decoration: none;
-        color: $text-color;
-        font-size: 24px;
-        font-weight: bold;
+    .fa-xmark {
+      display: none;
+    }
+
+    &.open .fa-bars {
+      display: none;
+    }
+
+    &.open .fa-xmark {
+      display: block;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .navbar-collapse {
+    display: flex;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: $text-color;
+      padding: 10px;
+      transition: color $transition-ease;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+
+    .navbar-collapse {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      right: 0;
+      background-color: $white-color;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      z-index: 1;
+
+      a {
+        padding: 10px;
+        font-size: 18px;
+      }
+    }
+
+    .navbar-collapse.open {
+      display: flex;
     }
 
     .menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 10px;
-        position: relative;
-        font-size: 24px; /* Ajuste la taille des icônes */
-        color: $text-color;
-        transition: color $transition-ease;
-
-        .fa-bars {
-            display: block;
-        }
-
-        .fa-xmark {
-            display: none;
-        }
-
-        &.open .fa-bars {
-            display: none;
-        }
-
-        &.open .fa-xmark {
-            display: block;
-        }
-
-        &:focus {
-            outline: none;
-        }
+      display: block;
     }
-
-    .navbar-collapse {
-        display: flex;
-        align-items: center;
-
-        a {
-            text-decoration: none;
-            color: $text-color;
-            padding: 10px;
-            transition: color $transition-ease;
-
-            &:hover {
-                color: $primary-color;
-            }
-        }
-    }
-
-    // Styles pour les petits écrans
-    @media (max-width: 768px) {
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000; // Assurer que la navbar est au-dessus des autres éléments
-
-        .navbar-collapse {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            top: 50px; // Ajuster la position du menu par rapport à la navbar
-            left: 0;
-            right: 0;
-            background-color: #ffffff;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            z-index: 1;
-
-            a {
-                padding: 10px;
-                font-size: 18px;
-            }
-        }
-
-        .navbar-collapse.open {
-            display: flex;
-        }
-
-        .menu-toggle {
-            display: block;
-        }
-    }
+  }
 }
-
-
-
-

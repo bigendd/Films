@@ -1,286 +1,185 @@
 @import "variable";
 @import "menu";
-@import "form";
-
-body {
-    font-family: $font-family;
-    background-color: $background-color;
-    color: $text-color;
-    margin: 0;
-    padding: 0;
-}
+@import "commun";
 
 .btn-show {
-    display: none;
+  display: none;
 }
 
 .admin-layout {
+  display: flex;
+  justify-content: center;
+
+  .admin-nav {
+    width: 250px;
+    background-color: #343a40;
+    color: $white-color;
+    height: 100vh;
+    position: fixed;
+    left: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 500;
 
-    .admin-nav {
-        width: 250px;
-        background-color: #343a40;
-        color: #ffffff;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        padding-top: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        z-index: 500;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+      li,
+      details {
+        width: 100%;
 
-            li,
-            details {
-                width: 100%;
+        a,
+        summary {
+          display: block;
+          padding: 15px 20px;
+          color: $white-color;
+          text-decoration: none;
+          transition: background-color 0.3s;
 
-                a,
-                summary {
-                    display: block;
-                    padding: 15px 20px;
-                    color: #ffffff;
-                    text-decoration: none;
-                    transition: background-color 0.3s;
+          &:hover {
+            background-color: #495057;
+          }
 
-                    &:hover {
-                        background-color: #495057;
-                    }
-
-                    &.active {
-                        background-color: 495057;
-                    }
-                }
-
-                summary {
-                    cursor: pointer;
-                    padding-left: 0;
-                }
-            }
-
-            details[open] {
-                div {
-                    display: block;
-                }
-            }
+          &.active {
+            background-color: 495057;
+          }
         }
+
+        summary {
+          cursor: pointer;
+          padding-left: 0;
+        }
+      }
+
+      details[open] {
+        div {
+          display: block;
+        }
+      }
     }
+  }
 
-    .content {
-        padding: 20px;
-        .form_act{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 99px;
-        }
-        }
+  .content {
+    padding: 20px;
+    .form_act {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 99px;
     }
-    .admin-content{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        form{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        }
-    }
-
+  }
+}
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
 footer {
-    display: none;
+  display: none;
 }
 
 @media (max-width: 1024px) {
-    
-    
-    h1 {
-        text-align: center;
-    }
+  h1 {
+    text-align: center;
+  }
 
-    table {
+  table {
+    width: 100%;
+  }
+
+  .admin-layout {
+    display: flex;
+    flex-direction: column;
+
+    .admin-nav {
+      width: 100%;
+      height: auto;
+      position: relative;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+      }
+
+      li,
+      details {
         width: 100%;
-
+      }
     }
+  }
 
-    .admin-layout {
-        display: flex;
-        flex-direction: column;
+  .menu-toggle {
+    display: block;
+  }
 
-        .admin-nav {
-            width: 100%;
-            height: auto;
-            position: relative;
+  .navbar-collapse {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background-color: $white-color;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1;
 
-            ul {
-                display: flex;
-                flex-direction: column;
-            }
-
-            li,
-            details {
-                width: 100%;
-            }
-        }
+    a {
+      padding: 10px;
+      font-size: 18px;
     }
+  }
 
-    .menu-toggle {
-        display: block;
-    }
+  .navbar-collapse.open {
+    display: flex;
+  }
 
-    .navbar-collapse {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        right: 0;
-        background-color: #ffffff;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        padding: 10px;
-        z-index: 1;
-
-        a {
-            padding: 10px;
-            font-size: 18px;
-        }
-    }
-
-    .navbar-collapse.open {
-        display: flex;
-    }
-
-    .column-id,
-    .column-actions {
-        display: none;
-    }
+  .column-id,
+  .column-actions {
+    display: none;
+  }
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    box-shadow: $card-shadow;
-    background-color: $card-bg-color;
-    
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: $card-shadow;
+  background-color: $white-color;
 
-    th,
-    td {
-        padding: 12px 12px;
-        border: 1px solid $card-border-color;
-        text-align: left;
-    }
+  th,
+  td {
+    padding: 12px 12px;
+    border: 1px solid $card-border-color;
+    text-align: left;
+  }
 
-    th {
-        background-color: $primary-color;
-        color: #fff;
-    }
+  th {
+    background-color: #343a40;
+    color: $white-color;
+  }
 
-    .com {
-        width: 50%;
-    }
+  .com {
+    width: 50%;
+  }
 
-    tr:nth-child(even) {
-        background-color: $background-color;
-    }
-
-    tr:hover {
-        background-color: $secondary-color;
-        color: #fff;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 5px 0;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background-color $transition-ease;
-
-        &.btn-primary {
-            background-color: $primary-color;
-            color: #fff;
-
-            &:hover {
-                background-color: darken($primary-color, 10%);
-            }
-        }
-
-        &.btn-secondary {
-            background-color: $secondary-color;
-            color: #fff;
-
-            &:hover {
-                background-color: darken($secondary-color, 10%);
-            }
-        }
-        &.btn-success {
-            background-color: #28a745;
-            color: #fff;
-
-            &:hover {
-                background-color: darken(#28a745, 10%);
-            }
-        }
-        &.btn-danger {
-            background-color: #dc3545;
-            color: #fff;
-
-            &:hover {
-                background-color: darken(#dc3545, 10%);
-            }
-        }
-    }
+  tr:hover {
+    background-color: $secondary-color;
+    color: $white-color;
+  }
 }
-.btn {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 5px 0;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color $transition-ease;
 
-    &.btn-primary {
-        background-color: $primary-color;
-        color: #fff;
-
-        &:hover {
-            background-color: darken($primary-color, 10%);
-        }
-    }
-
-    &.btn-secondary {
-        background-color: $secondary-color;
-        color: #fff;
-
-        &:hover {
-            background-color: darken($secondary-color, 10%);
-        }
-    }
-    &.btn-success {
-        background-color: #28a745;
-        color: #fff;
-
-        &:hover {
-            background-color: darken(#28a745, 10%);
-        }
-    }
-    &.btn-danger {
-        background-color: #dc3545;
-        color: #fff;
-
-        &:hover {
-            background-color: darken(#dc3545, 10%);
-        }
-    }
-}
 h2 {
-    text-align: center;
+  text-align: center;
 }

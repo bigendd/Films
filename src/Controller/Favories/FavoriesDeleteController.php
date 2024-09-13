@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Favories;
 
 use App\Entity\Favoris;
@@ -32,7 +33,6 @@ class FavoriesDeleteController extends AbstractController
             return $this->redirectToRoute('film_list');
         }
 
-        // Find the favorite by ID and user
         $favorite = $this->entityManager->getRepository(Favoris::class)->findOneBy(['utilisateur' => $user, 'filmId' => $id]);
 
         if ($favorite) {
@@ -43,7 +43,6 @@ class FavoriesDeleteController extends AbstractController
             $this->addFlash('error', 'Favorite not found.');
         }
 
-        // Redirect based on the request origin
         $redirectUrl = $request->request->get('redirect_url');
         if ($redirectUrl) {
             return $this->redirect($redirectUrl);

@@ -5,10 +5,12 @@
 {% block title %}Nouveau Signalement{% endblock %}
 
 {% block body %}
+<main class="container">
     <h1>Nouveau Signalement</h1>
 
     {{ form_start(form) }}
         {{ form_row(form.raison) }}
-        <button class="btn">Envoyer</button>
+        <button class="btn btn-primary">Envoyer</button>
     {{ form_end(form) }}
+</main>
 {% endblock %}

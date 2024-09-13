@@ -35,6 +35,8 @@ class SignalementController extends AbstractController
 
         return $this->render('signalement/new.html.twig', [
             'form' => $form->createView(),
+            'current_route' => 'formulaire', 
+
         ]);
     }
 }

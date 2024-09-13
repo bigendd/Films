@@ -1,58 +1,77 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} 
+{# Hérite du fichier base.html.twig, ce qui signifie que ce template va utiliser la mise en page définie dans le template de base. #}
 
 {% block title %}Liste des Films{% endblock %}
+{# Définit le titre de la page pour le navigateur. Ce bloc remplace le bloc 'title' dans le template parent. #}
 
 {% block body %}
-<div class="container">
+{# Début du bloc 'body' qui remplace le contenu du bloc 'body' dans le template parent. #}
+<main class="container">
     <h1>Liste des Films</h1>
 
+    {# Formulaire de recherche pour filtrer les films par nom #}
     <form id="search-form" action="{{ path('film_list') }}" method="get" class="form-inline">
         <div class="bloc">
+            {# Champ de saisie pour la recherche de films #}
             <input type="text" id="search-input" name="search" placeholder="Rechercher..." class="form-control" value="{{ searchQuery }}">
+            {# Bouton pour soumettre le formulaire de recherche #}
             <button type="submit" class="btn btn-primary">Rechercher</button>
         </div>
 
-        <div id="suggestions"></div>
+        <div id="suggestions"></div> {# Div pour afficher les suggestions de recherche #}
     </form>
 
+    {# Affichage des boutons de filtre par genre #}
     <div class="genre">
         {% for genre in genres %}
+            {# Lien pour filtrer les films par genre spécifique #}
             <a href="{{ path('film_list', {'genre': genre.id}) }}" class="btn btn-secondary">{{ genre.name }}</a>
         {% endfor %}
     </div>
 
+    {# Boutons de filtre supplémentaires pour les films #}
     <div class="buttons">
         <a href="{{ path('film_list', {'type': 'upcoming'}) }}" class="btn btn-success">Films à venir</a>
         <a href="{{ path('film_list', {'type': 'top_rated'}) }}" class="btn btn-success">Films les mieux notés</a>
         <a href="{{ path('film_list', {'type': 'popular'}) }}" class="btn btn-success">Films populaires</a>
     </div>
 
+    {# Menu déroulant pour sélectionner un genre #}
     <div class="genre-select">
         <select id="genre-select" class="form-control">
             <option value="">Sélectionner un genre</option>
             {% for genre in genres %}
+                {# Option pour chaque genre disponible #}
                 <option value="{{ path('film_list', {'genre': genre.id}) }}">{{ genre.name }}</option>
             {% endfor %}
         </select>
     </div>
 
+    {# Conteneur pour afficher les films sous forme de cartes #}
     <div class="grid-container">
         {% if films|length > 0 %}
+            {# Boucle pour afficher chaque film dans la liste des films #}
             {% for film in films %}
                 <div class="card">
+                    {# Image du poster du film avec un lien vers les détails du film #}
                     <a href="{{ path('film_detail', {'id': film.id}) }}"><img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" class="card-img-top" alt="{{ film.title }}"></a>
                     <div class="card-body">
-                        <h5 class="card-title">{{ film.title }}</h5>
-                        <p>Date de sortie: {{ film.release_date }}</p>
+                        <h5 class="card-title">{{ film.title }}</h5> {# Titre du film #}
+                        <p>Date de sortie: {{ film.release_date }}</p> {# Date de sortie du film #}
+                        {# Lien vers la page de détails du film #}
                         <a href="{{ path('film_detail', {'id': film.id}) }}" class="btn btn-primary">Détails</a>
+                        
+                        {# Vérifie si le film est dans la liste des favoris de l'utilisateur #}
                         {% if film.id in favoriteMovieIds %}
+                            {# Formulaire pour retirer le film des favoris #}
                             <form action="{{ path('favorite_delete', {'id': film.id}) }}" method="post" class="d-inline">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ film.id) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_favorite_' ~ film.id) }}"> {# Jeton CSRF pour la sécurité #}
                                 <button type="submit" class="btn btn-danger">Retirer des favoris</button>
                             </form>
                         {% else %}
+                            {# Formulaire pour ajouter le film aux favoris #}
                             <form action="{{ path('film_add_favorite', {'id': film.id}) }}" method="post" class="d-inline">
-                                <input type="hidden" name="_token" value="{{ csrf_token('add_favorite_' ~ film.id) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('add_favorite_' ~ film.id) }}"> {# Jeton CSRF pour la sécurité #}
                                 <button type="submit" class="btn btn-success">Ajouter aux favoris</button>
                             </form>
                         {% endif %}
@@ -60,12 +79,19 @@
                 </div>
             {% endfor %}
         {% else %}
+            {# Message affiché si aucun film n'est trouvé #}
             <p>Aucun film trouvé pour cette page.</p>
         {% endif %}
     </div>
-</div>
-{% endblock %}
+
+    {# Bouton pour revenir en haut de la page #}
+    <button id="backToTopBtn" class="btn btn-secondary">&#8679;</button>
+
+</main>
+{% endblock %} {# Fin du bloc 'body' #}
 
 {% block javascript %}
+    {# Inclusion de fichiers JavaScript personnalisés #}
     <script src="{{ asset('asset/js/page.js') }}"></script>
-{% endblock %}
+    <script src="{{ asset('asset/js/app.js') }}"></script>
+{% endblock %} {# Fin du bloc 'javascript' #}

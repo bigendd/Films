@@ -8,12 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\TmdbApiService;  // Ajoute ceci
 
 class AvisEditController extends AbstractController
 {
     private $entityManager;
-    private $tmdbApiService;  // Ajoute ceci
 
     public function __construct(EntityManagerInterface $entityManager)  
     {
@@ -41,6 +39,8 @@ class AvisEditController extends AbstractController
         return $this->render('avis/edit.html.twig', [
             'avis' => $avis,
             'form' => $form->createView(),
+            'current_route' => 'formulaire', 
+
         ]);
     }
 }

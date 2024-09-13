@@ -8,17 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\TmdbApiService;  // Ajoute ceci
+use App\Service\TmdbApiService;  
 
 class AvisNewController extends AbstractController
 {
     private $entityManager;
-    private $tmdbApiService;  // Ajoute ceci
+    private $tmdbApiService; 
 
-    public function __construct(EntityManagerInterface $entityManager, TmdbApiService $tmdbApiService)  // Modifie ceci
+    public function __construct(EntityManagerInterface $entityManager, TmdbApiService $tmdbApiService)  
     {
         $this->entityManager = $entityManager;
-        $this->tmdbApiService = $tmdbApiService;  // Modifie ceci
+        $this->tmdbApiService = $tmdbApiService;  
     }
 
     #[Route('/avis/new/{filmId}', name: 'avis_new', methods: ['GET', 'POST'])]
@@ -38,7 +38,7 @@ class AvisNewController extends AbstractController
         }
 
         $avis = new Avis();
-        $avis->setTitre($filmDetails['title']);  // Set the film title
+        $avis->setTitre($filmDetails['title']);  
 
         $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);

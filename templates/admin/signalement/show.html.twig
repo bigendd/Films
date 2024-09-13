@@ -32,10 +32,10 @@
         </tr>
     </table>
 
-    <a href="{{ path('admin_signalement_index') }}">Retour à la liste</a>
+    <a href="{{ path('admin_signalement_index') }}" class="btn btn-success ">Retour à la liste</a>
 
     <h2>Répondre au Signalement et Bannir Utilisateur</h2>
-    <form method="post" action="{{ path('admin_signalement_handle', {'id': signalement.id}) }}">
+    <form method="post" action="{{ path('admin_signalement_new', {'id': signalement.id}) }}">
         <div class="form-check">
             <input class="form-check-input" type="radio" name="ban_type" id="ban7" value="7">
             <label class="form-check-label" for="ban7">

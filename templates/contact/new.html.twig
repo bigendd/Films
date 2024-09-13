@@ -1,16 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}Contactez-nous{% endblock %}
 
 {% block body %}
-<div class="container">
+<main class="container">
     <h1>Contactez-Nous</h1>
 
     {{ form_start(form) }}
-        {{ form_row(form.email) }}
+        
+        {% if form.email is defined %}
+            {{ form_row(form.email) }}
+        {% endif %}
+        
         {{ form_row(form.objet) }}
         {{ form_row(form.corps) }}
+        
         <button class="btn btn-primary">Envoyer</button>
     {{ form_end(form) }}
-</div>
+</main>
 {% endblock %}
