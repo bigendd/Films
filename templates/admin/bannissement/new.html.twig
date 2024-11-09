@@ -9,7 +9,7 @@
         {{ form_row(form.raison) }}
         {{ form_row(form.utilisateur) }}
         {{ form_row(form.duree) }}
-        <button class="btn">{{ button_label|default('Save') }}</button>
+        <button class="btn">Save</button>
     {{ form_end(form) }}
 
     <a href="{{ path('admin_bannissement_index') }}" class="btn btn-success ">Retour à la liste</a>
