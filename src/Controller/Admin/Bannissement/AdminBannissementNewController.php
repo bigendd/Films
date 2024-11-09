@@ -18,7 +18,7 @@ class AdminBannissementNewController extends AbstractController
     {
         // Vérification que l'utilisateur a le rôle ADMIN
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
+
         // On crée un nouveau bannissement
         $bannissement = new Bannissement();
         // On crée le formulaire pour ce bannissement
@@ -36,7 +36,7 @@ class AdminBannissementNewController extends AbstractController
                 // Bannissement temporaire de 7 jours
                 $bannissement->setDateFin((new \DateTime())->modify('+7 days'));
                 $bannissement->setDefinitif(false);
-                $bannissement->setStatut(false);
+                $bannissement->setStatut(true);
             } elseif ($duree === 'definitif') {
                 // Bannissement définitif
                 $bannissement->setDefinitif(true);
