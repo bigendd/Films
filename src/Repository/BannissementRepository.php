@@ -18,12 +18,7 @@ class BannissementRepository extends ServiceEntityRepository
         parent::__construct($registry, Bannissement::class);
     }
 
-    /**
-     * Retourne une QueryBuilder pour les utilisateurs sans bannissement actif
-     *
-     * @param Utilisateur $currentUser
-     * @return QueryBuilder
-     */
+   
     public function findUtilisateursSansBannissementActif(Utilisateur $currentUser): QueryBuilder
     {
         return $this->getEntityManager()->createQueryBuilder()

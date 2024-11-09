@@ -29,8 +29,6 @@ class AdminBannissementNewController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $duree = $form->get('duree')->getData();
 
-            
-
             // On vérifie la durée sélectionnée pour configurer le bannissement
             if ($duree === '7_jours') {
                 // Bannissement temporaire de 7 jours
@@ -49,7 +47,7 @@ class AdminBannissementNewController extends AbstractController
             $entityManager->flush();
 
             // On redirige vers la liste des bannissements
-            return $this->redirectToRoute('admin_bannissement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_bannissement_index');
         }
 
         // On affiche le formulaire pour créer un nouveau bannissement

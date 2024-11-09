@@ -17,18 +17,15 @@ class BannissementType extends AbstractType
 {
     private $tokenStorage;
     private $bannissementRepository;
-
     public function __construct(TokenStorageInterface $tokenStorage, BannissementRepository $bannissementRepository)
     {
         $this->tokenStorage = $tokenStorage;
         $this->bannissementRepository = $bannissementRepository;
     }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Récupérer l'utilisateur connecté
         $currentUser = $this->tokenStorage->getToken()->getUser();
-
         $builder
             ->add('raison', TextType::class, [
                 'attr' => ['class' => 'form-group-raison'],
@@ -48,7 +45,6 @@ class BannissementType extends AbstractType
                 'attr' => ['class' => 'form-group-duree'],
             ]);
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
