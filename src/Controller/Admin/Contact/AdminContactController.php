@@ -13,6 +13,9 @@ class AdminContactController extends AbstractController
     #[Route('/', name: 'admin_contact_index', methods: ['GET'])]
     public function index(ContactRepository $contactRepository): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On récupère les contacts qui ne sont pas archivés (statut = 0)
         $contacts = $contactRepository->findBy(['statut' => 0]);
 

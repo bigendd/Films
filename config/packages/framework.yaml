@@ -3,11 +3,10 @@ framework:
     secret: '%env(APP_SECRET)%'
     csrf_protection: true
 
-    # Note that the session will be started ONLY if you read or write from it.
-    session: true
-
-    #esi: true
-    #fragments: true
+    # Configuration de la session
+    session:
+        enabled: true
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
 
 when@test:
     framework:

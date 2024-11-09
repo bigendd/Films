@@ -13,6 +13,9 @@ class AdminUserController extends AbstractController
     #[Route('/admin/users', name: 'admin_users')]
     public function index(UtilisateurRepository $userRepository, BannissementRepository $banissementRepository): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $users = $userRepository->findAll();
 
         // Créez un tableau associatif pour lier les utilisateurs à leur statut de bannissement

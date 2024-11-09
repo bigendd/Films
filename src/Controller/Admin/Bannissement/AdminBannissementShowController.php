@@ -13,6 +13,9 @@ class AdminBannissementShowController extends AbstractController
     #[Route('/{id}', name: 'admin_bannissement_show', methods: ['GET'])]
     public function show(Bannissement $bannissement): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On rend la vue pour afficher les détails du bannissement
         return $this->render('admin/bannissement/show.html.twig', [
             'bannissement' => $bannissement,  // Le bannissement à afficher

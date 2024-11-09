@@ -1,5 +1,4 @@
 <?php
-// src/Controller/Admin/BannissementController.php
 
 namespace App\Controller\Admin\Bannissement;
 
@@ -14,10 +13,13 @@ class AdminBannissementController extends AbstractController
     #[Route('/', name: 'admin_bannissement_index', methods: ['GET'])]
     public function index(BannissementRepository $bannissementRepository): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On récupère tous les bannissements qui ont le statut = false
         return $this->render('admin/bannissement/index.html.twig', [
             'bannissements' => $bannissementRepository->findBy(['statut' => false]), // Les bannissements à afficher
-            'current_route' => 'admin', // La route actuelle pour la vue
+            'current_route' => 'admin', // La route pour la vue
         ]);
     }
 

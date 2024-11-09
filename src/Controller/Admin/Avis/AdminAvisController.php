@@ -21,6 +21,9 @@ class AdminAvisController extends AbstractController
     #[Route('/admin/avis', name: 'admin_avis_index', methods: ['GET'])]
     public function index(): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         // On récupère tous les avis qui ont le statut = 0 (peut-être en attente de traitement)
         $avis = $this->entityManager->getRepository(Avis::class)->findBy(['statut' => 0]);
 

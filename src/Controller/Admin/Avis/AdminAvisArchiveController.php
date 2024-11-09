@@ -27,6 +27,9 @@ class AdminAvisArchiveController extends AbstractController
     #[Route('/admin/avis{id}/archive', name: 'admin_avis_archive', methods: ['POST'])]
     public function archive(int $id, Request $request): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         // On récupère l'avis par son id
         $avi = $this->entityManager->getRepository(Avis::class)->find($id);
         if ($avi) {
@@ -37,24 +40,22 @@ class AdminAvisArchiveController extends AbstractController
             $filmTitle = $avi->getTitre() ?? 'le film';
 
             // On prépare un email pour notifier l'utilisateur que son avis a été archivé
-            $email = (new TemplatedEmail())
-                ->from('amarbelaifa8@gmail.com')  // Adresse expéditeur
-                ->to($avi->getUtilisateur()->getEmail())  // Email de l'utilisateur
-                ->subject('Votre avis a été archivé')  // Sujet de l'email
-                ->htmlTemplate('reponse_archive/reponse_archive.html.twig')  // Template pour le corps de l'email
-                ->context([
-                    'avi' => $avi,
-                    'filmTitle' => $filmTitle,  // On passe le titre du film dans le contexte de l'email
-                ]);
+            // $email = (new TemplatedEmail())
+            //     ->from('amarbelaifa8@gmail.com')  // Adresse expéditeur
+            //     ->to($avi->getUtilisateur()->getEmail())  // Email de l'utilisateur
+            //     ->subject('Votre avis a été archivé')  // Sujet de l'email
+            //     ->htmlTemplate('reponse_archive/reponse_archive.html.twig')  // Template pour le corps de l'email
+            //     ->context([
+            //         'avi' => $avi,
+            //         'filmTitle' => $filmTitle,  // On passe le titre du film dans le contexte de l'email
+            //     ]);
 
-            // Envoie de l'email à l'utilisateur
-            $this->mailer->send($email);
+            // // Envoie de l'email à l'utilisateur
+            // $this->mailer->send($email);
 
             // On enregistre les changements dans la base de données
             $this->entityManager->flush();
 
-            // On ajoute un message flash pour indiquer que l'archivage a bien eu lieu
-            $this->addFlash('notice', 'L\'avis a été archivé et l\'utilisateur a été notifié.');
         }
 
         // On redirige vers la page de détails du film après l'archivage

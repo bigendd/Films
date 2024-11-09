@@ -22,6 +22,9 @@ class AdminSignalementController extends AbstractController
     #[Route('/', name: 'admin_signalement_index', methods: ['GET'])]
     public function index(): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On récupère tous les signalements qui ne sont pas encore traités (statut = 0)
         $signalements = $this->entityManager->getRepository(Signalement::class)->findBy(['statut' => 0]);
 

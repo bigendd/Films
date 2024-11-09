@@ -1,65 +1,83 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-
   const searchInput = document.getElementById("search-input");
   const suggestionsContainer = document.getElementById("suggestions");
+  const genreSelect = document.getElementById("genre-select");
+  const searchForm = document.getElementById("search-form");
 
-  // Fonction pour récupérer les suggestions
+  // Fonction pour aller chercher les suggestions d'autocomplétion quand l'utilisateur tape quelque chose
   function fetchSuggestions() {
-    const query = searchInput.value; 
+    const query = searchInput.value;
+
+    // Si la requête est trop courte (< 2 caractères), on cache les suggestions
     if (query.length < 2) {
-      // Vérifie si la longueur de la requête est inférieure à 2 caractères.
-      suggestionsContainer.style.display = "none"; 
-      return; 
+      suggestionsContainer.style.display = "none";
+      return;
     }
 
-    // Utilise fetch et des promesses pour obtenir les suggestions d'auto-complétion
-    fetch(`/autocomplete?query=${query}`)
-      .then((response) => response.json()) // Convertit la réponse en JSON
+    // Requête au serveur pour obtenir des suggestions (endpoint `/autocomplete`)
+    fetch(`https://qcqc.fr/amar/public/autocomplete?query=${query}`)
+      .then((response) => response.json()) // Conversion de la réponse en JSON
       .then((suggestions) => {
-        suggestionsContainer.innerHTML = ""; // Vide le conteneur des suggestions avant d'ajouter de nouvelles suggestions.
-        suggestionsContainer.style.display = "block"; 
-      
+        // On vide et affiche le conteneur des suggestions
+        suggestionsContainer.innerHTML = "";
+        suggestionsContainer.style.display = "block";
+
+        // Pour chaque suggestion, on crée un élément div et on l'ajoute au conteneur
         suggestions.forEach((suggestion) => {
-          const div = document.createElement("div"); 
-          div.textContent = suggestion.title; // Définit le texte du div comme étant le titre de la suggestion.
-          div.classList.add("suggestion-item"); 
+          const div = document.createElement("div");
+          div.textContent = suggestion.title; // Le titre du film est affiché
+          div.classList.add("suggestion-item");
+          // Si on clique sur la suggestion, redirection vers la page du film
           div.onclick = () => {
-            window.location.href = `/film/${suggestion.id}`; // Redirige vers la page de détail du film.
+            window.location.href = `https://qcqc.fr/amar/public/film/${suggestion.id}`;
           };
-          suggestionsContainer.appendChild(div); // Ajoute le div de suggestion au conteneur des suggestions.
+          suggestionsContainer.appendChild(div);
         });
       })
+      // Gestion des erreurs si la requête échoue
       .catch((error) => {
         console.error("Erreur lors de la récupération des suggestions :", error);
       });
   }
 
-  // Attache fetchSuggestions à l'événement keyup de l'input de recherche
+  // Déclenche la fonction de suggestions à chaque fois qu'on tape dans la barre de recherche
   searchInput.addEventListener("keyup", fetchSuggestions);
 
-  // Cache les suggestions lorsque l'utilisateur clique à l'extérieur du conteneur des suggestions
+  // Quand on clique en dehors des suggestions, elles disparaissent
   document.addEventListener("click", function (event) {
     if (!suggestionsContainer.contains(event.target)) {
-      // Vérifie si le conteneur des suggestions ne contient pas l'élément cliqué.
-      suggestionsContainer.style.display = "none"; // Cache le conteneur des suggestions.
+      suggestionsContainer.style.display = "none";
     }
   });
 
-  // Fonction pour réinitialiser le champ de recherche et les suggestions
+  // Empêche l'envoi du formulaire si la barre de recherche est vide, sinon sauvegarde la recherche dans le localStorage
+  searchForm.addEventListener("submit", function (event) {
+    if (searchInput.value.trim() === "") {
+      event.preventDefault(); // Annule l'envoi si la recherche est vide
+      window.location.href = "https://qcqc.fr/amar/public/"; // Redirige vers la page d'accueil
+    }
+    // Sauvegarde la recherche dans le localStorage avant soumission
+    localStorage.setItem("searchQuery", searchInput.value);
+  });
+
+  // Fonction pour réinitialiser la barre de recherche et cacher les suggestions
   function resetSearchInput() {
-    searchInput.value = ""; // Réinitialise la valeur du champ de recherche.
-    suggestionsContainer.innerHTML = ""; // Vide le conteneur des suggestions.
-    suggestionsContainer.style.display = "none"; // Cache le conteneur des suggestions.
+    searchInput.value = ""; // Efface la recherche
+    suggestionsContainer.innerHTML = ""; // Vide les suggestions
+    suggestionsContainer.style.display = "none"; // Cache le conteneur de suggestions
   }
 
-  // Efface le champ de recherche et les suggestions lorsque l'utilisateur revient à la page via le bouton "Précédent"
+  // Si la page est rechargée depuis le cache (bouton "Précédent"), réinitialise la recherche
   window.addEventListener("pageshow", (event) => {
-    if (
-      event.persisted ||
-      (window.performance && window.performance.navigation.type === 2)
-    ) {
-      // Vérifie si la page est chargée à partir du cache (via l'utilisation du bouton "Précédent").
-      resetSearchInput(); 
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+      resetSearchInput();
+    }
+  });
+
+  // Quand l'utilisateur sélectionne un genre, il est redirigé vers l'URL correspondante
+  genreSelect.addEventListener("change", function () {
+    if (genreSelect.value) {
+      window.location.href = genreSelect.value;
     }
   });
 });

@@ -1,5 +1,4 @@
 <?php
-// src/Service/TmdbApiService.php
 
 namespace App\Service;
 
@@ -17,16 +16,18 @@ class TmdbApiService
         $this->apiKey = $apiKey;
         $this->baseUrl = $baseUrl;
     }
-
-    public function getMovies(string $endpoint, array $params = []): array
+    //les films
+    public function getMovies(string $chemin, array $params = []): array
     {
-        $response = $this->httpClient->request('GET', $this->baseUrl . $endpoint, [
+        $response = $this->httpClient->request('GET', $this->baseUrl . $chemin, [
             'query' => array_merge(['api_key' => $this->apiKey, 'language' => 'fr-FR'], $params),
         ]);
 
         return $response->toArray();
     }
 
+
+    //details des films
     public function getMovieDetails(int $tmdbId): ?array
     {
         $responseDetails = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId, [
@@ -76,7 +77,7 @@ class TmdbApiService
 
         return $filmDetails;
     }
-
+    //les genres des films
     public function getGenres(): array
     {
         $response = $this->httpClient->request('GET', $this->baseUrl . '/genre/movie/list', [
@@ -88,37 +89,37 @@ class TmdbApiService
 
         return $response->toArray();
     }
-
-    // Nouveaux services ajoutés
+    // les mieux notés 
     public function getTopRatedMovies(): array
     {
-        return $this->getMovies('/movie/top_rated');
+        return $this->getMovies('/movie/top_rated', ['language' => 'fr-FR']);
     }
-
+    //les nouveaux films
     public function getUpcomingMovies(): array
     {
-        return $this->getMovies('/movie/upcoming');
+        return $this->getMovies('/movie/upcoming', ['language' => 'fr-FR']);
     }
-
+    //les films recherchés
     public function searchMovies(string $query): array
     {
-        return $this->getMovies('/search/movie', ['query' => $query]);
-    }
+        if (empty($query)) {
+            return ['results' => []];
+        }
 
-    public function getPopularMovies(): array
-    {
-        return $this->getMovies('/movie/popular');
-    }
-
-    public function getMovieReviews(int $tmdbId): array
-    {
-        $response = $this->httpClient->request('GET', $this->baseUrl . '/movie/' . $tmdbId . '/reviews', [
+        $response = $this->httpClient->request('GET', $this->baseUrl . '/search/movie', [
             'query' => [
                 'api_key' => $this->apiKey,
+                'query' => $query,
                 'language' => 'fr-FR',
             ],
         ]);
 
         return $response->toArray();
+    }
+    
+    //les films populaire
+    public function getPopularMovies(): array
+    {
+        return $this->getMovies('/movie/popular', ['language' => 'fr-FR']);
     }
 }

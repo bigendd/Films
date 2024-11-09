@@ -1,57 +1,49 @@
 {% extends 'base.html.twig' %}
-{# Ce template étend le template de base 'base.html.twig', ce qui signifie qu'il hérite de la mise en page et de la structure définies dans 'base.html.twig'. #}
 
 {% block title %}Se connecter!{% endblock %}
-{# Définit le contenu du bloc 'title' pour ce template, qui est affiché dans la balise <title> de l'onglet du navigateur. Ici, le titre de la page est "Se connecter!". #}
 
 {% block body %}
-{# Début du bloc 'body' qui remplace le bloc 'body' dans le template parent. Ce bloc contient le contenu principal de la page. #}
 <main class="container">
-    {# Formulaire de connexion #}
     <form method="post" action="{{ path('app_login', {'redirect': redirect}) }}" type="reset">
-        {# Début du formulaire de connexion avec la méthode POST. L'action du formulaire est définie pour rediriger vers la route 'app_login' avec un paramètre 'redirect'. #}
+        {# Afficher les messages flash ici #}
+        {% for message in app.flashes('error') %}
+            <div>{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div>{{ message }}</div>
+        {% endfor %}
 
+        {# Si une erreur de connexion existe (variable 'error'), elle est affichée ici. #}
         {% if error %}
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {# Si une erreur de connexion existe (variable 'error'), elle est affichée ici. 'error.messageKey' est traduit en utilisant le domaine de traduction 'security'. #}
         {% endif %}
 
         {% if app.user %}
             <div>
-                vous etes connecté en tanque {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">décconexion</a>
-                {# Si l'utilisateur est déjà connecté ('app.user' n'est pas nul), un message est affiché indiquant l'utilisateur connecté. Un lien est fourni pour la déconnexion en utilisant la route 'app_logout'. #}
+                vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">déconnexion</a>
             </div>
         {% endif %}
 
-        <h1>Se connecter</h1> {# Titre de la section du formulaire de connexion #}
+        <h1>Se connecter</h1> 
 
-        <label for="username">Email</label> {# Étiquette pour le champ de saisie de l'email #}
+        <label for="username">Email</label>
         <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        {# Champ de saisie pour l'email de l'utilisateur. 'value="{{ last_username }}"' remplit automatiquement le champ avec le dernier nom d'utilisateur saisi. Le champ est requis et met automatiquement le focus lors du chargement de la page. #}
-
-        <label for="password">Password</label> {# Étiquette pour le champ de saisie du mot de passe #}
+        
+        <label for="password">Password</label>
         <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        {# Champ de saisie pour le mot de passe de l'utilisateur. Le champ est requis et utilise l'auto-complétion pour les mots de passe actuels. #}
-
+      
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        {# Champ caché pour inclure un jeton CSRF qui protège le formulaire contre les attaques CSRF. Le jeton est généré pour le contexte 'authenticate'. #}
 
         <input type="hidden" name="redirect" value="{{ redirect }}">
-        {# Champ caché pour passer la valeur de redirection ('redirect') si elle est définie. #}
 
         <button class="btn btn-primary" type="submit">
             Se connecter
         </button>
-        {# Bouton pour soumettre le formulaire de connexion. #}
 
         <p>
             <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
-            {# Lien vers la page de demande de réinitialisation du mot de passe, en utilisant la route 'app_forgot_password_request'. #}
-
-            <a href="{{ path('app_register') }}">inscription</a>
-            {# Lien vers la page d'inscription, en utilisant la route 'app_register'. #}
+            <a href="{{ path('app_register') }}">Inscription</a>
         </p>
     </form>
 </main>
 {% endblock %}
-{# Fin du bloc 'body'. #}

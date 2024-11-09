@@ -1,13 +1,16 @@
+@import "variable";
+
+
 footer {
     .footer-content {
         text-align: center;
         padding: 1em 0;
         background-color: #333;
-        color: white;
+        color: $white-color;
         position: absolute;
         width: 100%;
         a {
-            color: #fff;
+            color: $white-color;
             text-decoration: none;
 
             &:hover {

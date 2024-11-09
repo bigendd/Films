@@ -1,6 +1,5 @@
-@charset "UTF-8";
 nav {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 10px 0;
   position: relative;
 }
@@ -42,17 +41,17 @@ nav .menu-toggle.open .fa-xmark {
 nav .menu-toggle:focus {
   outline: none;
 }
-nav .navbar-collapse {
+nav .navbar {
   display: flex;
   align-items: center;
 }
-nav .navbar-collapse a {
+nav .navbar a {
   text-decoration: none;
   color: #333;
   padding: 10px;
   transition: color 0.3s ease;
 }
-nav .navbar-collapse a:hover {
+nav .navbar a:hover {
   color: #aaa2d8;
 }
 @media (max-width: 768px) {
@@ -62,7 +61,7 @@ nav .navbar-collapse a:hover {
     right: 0;
     z-index: 1000;
   }
-  nav .navbar-collapse {
+  nav .navbar {
     display: none;
     flex-direction: column;
     position: absolute;
@@ -74,11 +73,11 @@ nav .navbar-collapse a:hover {
     padding: 10px;
     z-index: 1;
   }
-  nav .navbar-collapse a {
+  nav .navbar a {
     padding: 10px;
     font-size: 18px;
   }
-  nav .navbar-collapse.open {
+  nav .navbar.open {
     display: flex;
   }
   nav .menu-toggle {
@@ -90,7 +89,7 @@ footer .footer-content {
   text-align: center;
   padding: 1em 0;
   background-color: #333;
-  color: white;
+  color: #fff;
   position: absolute;
   width: 100%;
 }
@@ -211,9 +210,9 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 #search-form #suggestions .suggestion-item {
-  padding: 8px; /* Espace interne autour du texte */
-  cursor: pointer; /* Curseur "cliquable" */
-  border-bottom: 1px solid #eee; /* Ligne de séparation entre chaque suggestion */
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
 }
 
 .genre {

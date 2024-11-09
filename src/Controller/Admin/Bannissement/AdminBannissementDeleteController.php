@@ -16,6 +16,9 @@ class AdminBannissementDeleteController extends AbstractController
     #[Route('/{id}/delete', name: 'admin_bannissement_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $entityManager, Bannissement $bannissement): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // Vérifie si le token CSRF est valide pour sécuriser la suppression
         if ($this->isCsrfTokenValid('delete'.$bannissement->getId(), $request->get('_token'))) {
             // On supprime le bannissement de la base de données

@@ -16,6 +16,9 @@ class AdminBannissementEditController extends AbstractController
     #[Route('/{id}/edit', name: 'admin_bannissement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bannissement $bannissement, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On crée le formulaire pour éditer le bannissement
         $form = $this->createForm(BannissementType::class, $bannissement);
         $form->handleRequest($request);

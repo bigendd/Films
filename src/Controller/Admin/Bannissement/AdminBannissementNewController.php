@@ -16,6 +16,9 @@ class AdminBannissementNewController extends AbstractController
     #[Route('/new', name: 'admin_bannissement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On crée un nouveau bannissement
         $bannissement = new Bannissement();
         // On crée le formulaire pour ce bannissement
@@ -26,12 +29,14 @@ class AdminBannissementNewController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $duree = $form->get('duree')->getData();
 
+            
+
             // On vérifie la durée sélectionnée pour configurer le bannissement
             if ($duree === '7_jours') {
                 // Bannissement temporaire de 7 jours
                 $bannissement->setDateFin((new \DateTime())->modify('+7 days'));
                 $bannissement->setDefinitif(false);
-                $bannissement->setStatut(true);
+                $bannissement->setStatut(false);
             } elseif ($duree === 'definitif') {
                 // Bannissement définitif
                 $bannissement->setDefinitif(true);

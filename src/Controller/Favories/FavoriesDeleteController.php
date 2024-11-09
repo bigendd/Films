@@ -9,45 +9,51 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FavoriesDeleteController extends AbstractController
+class FavoriesDeleteController extends AbstractController 
 {
-    private $entityManager;
+    private $entityManager; // Gère les opérations sur la base de données
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager) 
     {
-        $this->entityManager = $entityManager;
+        // Initialisation de l'EntityManager
+        $this->entityManager = $entityManager; 
     }
 
-    #[Route('/favorite/{id}/delete', name: 'favorite_delete', methods: ['POST'])]
-    public function deleteFavorite(Request $request, int $id): Response
+    #[Route('/favorite/{id}/delete', name: 'favorite_delete', methods: ['POST'])] 
+    public function deleteFavorite(Request $request, int $id): Response 
     {
-        $user = $this->getUser();
+        // On récupère l'utilisateur connecté
+        $user = $this->getUser(); 
+        // Si pas de connexion, on redirige vers la page de login
         if (!$user) {
-            $this->addFlash('error', 'User not authenticated.');
-            return $this->redirectToRoute('app_login');
+            $this->addFlash('error', 'User not authenticated.'); // Message d'erreur flash
+            return $this->redirectToRoute('app_login'); 
         }
 
-        // Check CSRF token
+        // Vérifie le token CSRF pour éviter les attaques
         if (!$this->isCsrfTokenValid('delete_favorite_' . $id, $request->request->get('_token'))) {
-            $this->addFlash('error', 'Invalid CSRF token.');
-            return $this->redirectToRoute('film_list');
+            $this->addFlash('error', 'Invalid CSRF token.'); // Message d'erreur pour token invalide
+            return $this->redirectToRoute('film_list'); 
         }
 
-        $favorite = $this->entityManager->getRepository(Favoris::class)->findOneBy(['utilisateur' => $user, 'filmId' => $id]);
+        // Récupère le favori à supprimer pour cet utilisateur
+        $favorite = $this->entityManager->getRepository(Favoris::class)->findOneBy(['utilisateur' => $user, 'filmId' => $id]); 
 
         if ($favorite) {
+            // Si trouvé, on le supprime
             $this->entityManager->remove($favorite);
-            $this->entityManager->flush();
-            $this->addFlash('success', 'Favorite removed successfully.');
+            $this->entityManager->flush(); // Envoie les changements à la base de données
+            $this->addFlash('success', 'Favorite removed successfully.'); // Message de succès
         } else {
-            $this->addFlash('error', 'Favorite not found.');
+            $this->addFlash('error', 'Favorite not found.'); // Message d'erreur si pas trouvé
         }
 
-        $redirectUrl = $request->request->get('redirect_url');
+        // Récupère l'URL de redirection si fournie
+        $redirectUrl = $request->request->get('redirect_url'); 
         if ($redirectUrl) {
-            return $this->redirect($redirectUrl);
+            return $this->redirect($redirectUrl); // Redirection personnalisée
         }
 
-        return $this->redirectToRoute('film_list');
+        return $this->redirectToRoute('film_list'); // Redirection par défaut
     }
 }

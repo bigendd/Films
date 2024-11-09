@@ -18,6 +18,9 @@ class AdminContactReponseController extends AbstractController
     #[Route('/{id}/respond', name: 'admin_contact_respond', methods: ['GET', 'POST'])]
     public function respond(Request $request, Contact $contact, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         // On crée le formulaire pour répondre au contact
         $form = $this->createForm(ReponseType::class);
         $form->handleRequest($request);
@@ -29,15 +32,15 @@ class AdminContactReponseController extends AbstractController
             $contact->setReponseAdmin($reponse);
             $contact->setStatut(true); // On archive le message après avoir répondu
 
-            // On prépare l'email avec la réponse
-            $email = (new Email())
-                ->from('isetif149@gmail.com')  // L'adresse de l'expéditeur
-                ->to($contact->getEmail())  // L'adresse du destinataire
-                ->subject('Réponse à votre message')  // Sujet de l'email
-                ->text($reponse);  // Contenu de l'email
+            // // On prépare l'email avec la réponse
+            // $email = (new Email())
+            //     ->from('isetif149@gmail.com')  // L'adresse de l'expéditeur
+            //     ->to($contact->getEmail())  // L'adresse du destinataire
+            //     ->subject('Réponse à votre message')  // Sujet de l'email
+            //     ->text($reponse);  // Contenu de l'email
 
-            // On envoie l'email
-            $mailer->send($email);
+            // // On envoie l'email
+            // $mailer->send($email);
 
             // On sauvegarde les changements dans la base de données
             $entityManager->flush();

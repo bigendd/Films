@@ -1,5 +1,4 @@
 <?php
-// src/Form/SignalementType.php
 
 namespace App\Form;
 

@@ -21,6 +21,9 @@ class AdminAvisShowController extends AbstractController
     #[Route('/admin/avis/{id}', name: 'admin_avis_show', methods: ['GET'])]
     public function show(int $id): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         // On cherche l'avis avec l'id donné
         $avis = $this->entityManager->getRepository(Avis::class)->find($id);
 

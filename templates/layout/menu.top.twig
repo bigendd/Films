@@ -6,10 +6,12 @@
             <i class="fa-solid fa-bars"></i>
             <i class="fa-solid fa-xmark"></i>
         </button>
-        <div class="navbar-collapse">
+        <div class="navbar">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ path('profile_view') }}">Profil</a>
-                <a href="{{ path('favorite_list') }}">Mes Favoris</a>
+                <a href="{{ path('favorite_list') }}">
+                    Mes Favoris
+                </a>
                 <a href="{{ path('app_contact_new') }}">Contactez-nous</a>
 
                 {% if is_granted('ROLE_ADMIN') %}
@@ -29,4 +31,3 @@
 {% block javascript %}
     <script src="{{ asset('asset/js/menu.js') }}"></script>
 {% endblock %}
-

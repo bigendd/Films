@@ -8,33 +8,39 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FilmAutocompliteController extends AbstractController
+class FilmAutocompliteController extends AbstractController 
 {
-    private $tmdbApiService;
+    private $tmdbApiService; // Service pour interagir avec l'API TMDB
 
     public function __construct(TmdbApiService $tmdbApiService)
     {
-        $this->tmdbApiService = $tmdbApiService;
+        // On initialise le service TMDB
+        $this->tmdbApiService = $tmdbApiService; 
     }
 
-    #[Route('/autocomplete', name: 'film_autocomplete', methods: ['GET'])]
-    public function autocomplete(Request $request): JsonResponse
+    #[Route('/autocomplete', name: 'film_autocomplete', methods: ['GET'])] 
+    public function autocomplete(Request $request): JsonResponse 
     {
-        $query = $request->query->get('query', '');
+        // Récupère la requête de recherche
+        $query = $request->query->get('query', ''); 
 
+        // Si la requête est vide, renvoie un tableau vide
         if (empty($query)) {
-            return $this->json([]);
+            return $this->json([]); 
         }
 
-        $films = $this->tmdbApiService->getMovies('/search/movie', ['query' => $query]);
+        // Récupère les films correspondants à la requête via l'API TMDB
+        $films = $this->tmdbApiService->getMovies('/search/movie', ['query' => $query]); 
 
+        // Prépare les suggestions à renvoyer
         $suggestions = array_map(function ($film) {
             return [
-                'title' => $film['title'],
-                'id' => $film['id']
+                'title' => $film['title'], // Titre du film
+                'id' => $film['id'] // ID du film
             ];
-        }, $films['results'] ?? []);
+        }, $films['results'] ?? []); // Utilise l'opérateur de coalescence pour éviter les erreurs
 
-        return $this->json($suggestions);
+        // Renvoie les données en JSON
+        return $this->json($suggestions); 
     }
 }

@@ -124,35 +124,48 @@ class Bannissement
         return $this;
     }
 
-    public function getRemainingDays(): ?int 
-    {
-        if ($this->dateFin) {
-            $now = new \DateTime();
-            $interval = $now->diff($this->dateFin);
-            return $interval->days;
-        }
-        return null;
+public function getJoursRestant(): ?int 
+{
+    // Vérifie s'il y a une date de fin définie pour le bannissement
+    if ($this->dateFin) {
+        // Crée un objet DateTime représentant la date et l'heure actuelles
+        $now = new \DateTime();
+        // Calcule la différence de temps entre maintenant et la date de fin du bannissement
+        $interval = $now->diff($this->dateFin);
+        // Retourne le nombre de jours restants jusqu'à la date de fin (sous forme de nombre entier)
+        return $interval->days;
+    }
+    // Si aucune date de fin n'est définie, retourne null
+    return null;
+}
+
+public function isBanne(): bool
+{
+    // Si le bannissement est définitif, retourne immédiatement true
+    if ($this->definitif) {
+        return true;
     }
 
-    public function isBanned(): bool
-    {
-        if ($this->definitif) {
-            return true;
-        }
-
-        if ($this->dateFin !== null && $this->dateFin > new \DateTime()) {
-            return true;
-        }
-
-        return false;
+    // Si une date de fin est définie et qu'elle est dans le futur, retourne true
+    if ($this->dateFin !== null && $this->dateFin > new \DateTime()) {
+        return true;
     }
-    public function isBannissementExpired(): bool
-    {
-        if ($this->dateFin !== null) {
-            $now = new \DateTime();
-            // Vérifie si la date de fin du bannissement est passée
-            return $this->dateFin <= $now;
-        }
-        return false;
+
+    // Si aucune condition de bannissement n'est remplie, retourne false
+    return false;
+}
+
+public function banneExpiree(): bool
+{
+    // Vérifie s'il existe une date de fin de bannissement
+    if ($this->dateFin !== null) {
+        // Crée un objet DateTime représentant la date et l'heure actuelles
+        $now = new \DateTime();
+        // Compare la date de fin avec la date actuelle pour vérifier si le bannissement est terminé
+        return $this->dateFin <= $now;
     }
+    // Retourne false si aucune date de fin n'est définie
+    return false;
+}
+
 }

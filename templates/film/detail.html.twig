@@ -1,5 +1,3 @@
-{# templates/film/detail.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ film.title }}{% endblock %}
@@ -14,7 +12,7 @@
 
         <div class="film-details">
             <div class="film-poster">
-                <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} poster">
+                <img src="https://image.tmdb.org/t/p/w300{{ film.poster_path }}" alt="{{ film.title }} image">
             </div>
             <div class="film-info">
                 <p>{{ film.overview }}</p>
@@ -127,7 +125,7 @@
             <div class="avis">
                 <p><strong>{{ avi.utilisateur.email }}:</strong></p>
                 <p>{{ avi.commentaire }}</p>
-                <p><small>Reviewed on {{ avi.dateDeCreation|date('Y-m-d H:i') }}</small></p>
+                <p><small>Écris le {{ avi.dateDeCreation|date('Y-m-d H:i') }}</small></p>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') and avi.utilisateur == app.user %}
                     <a href="{{ path('avis_edit', {'id': avi.id}) }}" class="btn btn-secondary">Edit</a>
                     <form action="{{ path('avis_delete', {'id': avi.id}) }}" method="post" style="display:inline;">

@@ -1,10 +1,8 @@
 @import "variable";
 @import "menu";
 @import "commun";
+@import "form";
 
-.btn-show {
-  display: none;
-}
 
 .admin-layout {
   display: flex;
@@ -81,7 +79,20 @@
   form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 20px;
+    background-color: #f7f7f7;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    select{
+      width: 100%;
+    }
+    
+ 
+  
+
+  
+
   }
 }
 
@@ -123,7 +134,7 @@ footer {
     display: block;
   }
 
-  .navbar-collapse {
+  .navbar {
     display: none;
     flex-direction: column;
     position: absolute;
@@ -141,7 +152,7 @@ footer {
     }
   }
 
-  .navbar-collapse.open {
+  .navbar.open {
     display: flex;
   }
 

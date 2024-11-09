@@ -6,6 +6,7 @@
 parameters:
     tmdb_api_key: '%env(TMDB_API_KEY)%'
     tmdb_api_base_url: '%env(TMDB_API_BASE_URL)%'
+    
 
 services:
     # default configuration for services in *this* file
@@ -27,7 +28,6 @@ services:
             $httpClient: '@http_client'
             $apiKey: '%tmdb_api_key%'
             $baseUrl: '%tmdb_api_base_url%'
-            # config/services.yaml
 
     # ...
     App\Security\UserChecker:

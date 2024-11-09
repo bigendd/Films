@@ -1,5 +1,4 @@
 <?php
-// src/Security/UserChecker.php
 
 namespace App\Security;
 
@@ -24,27 +23,24 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        // Débogage
-        error_log('UserChecker: checkPreAuth called for user ' . $user->getEmail());
 
         // Vérifiez si l'utilisateur est banni
         $bannissement = $user->getBannissement();
         if ($bannissement) {
-            if ($bannissement->isBanned()) {
-                $remainingDays = $bannissement->getRemainingDays();
+            if ($bannissement->isBanne()) {
+                $jourRestant = $bannissement->getJoursRestant();
                 
-                if ($remainingDays !== null && $remainingDays > 0 && $remainingDays <= 7) {
-                    error_log('UserChecker: User ' . $user->getEmail() . ' is banned for ' . $remainingDays . ' days.');
-                    throw new CustomUserMessageAccountStatusException('Votre compte a été banni pour ' . $remainingDays . ' jours.');
+                if ($jourRestant !== null && $jourRestant > 0 && $jourRestant <= 7) {
+                    throw new CustomUserMessageAccountStatusException('Votre compte a été banni pour ' . $jourRestant . ' jours.');
                 } elseif ($bannissement->isDefinitif()) {
-                    throw new CustomUserMessageAccountStatusException('Votre compte a été banni définitivement.');
+                    throw new CustomUserMessageAccountStatusException('Votre compte a été banni définitivement veuillez nous contactez pour des information.');
                 } else {
                     throw new CustomUserMessageAccountStatusException('Votre compte a été banni.');
                 }
             }
 
             // Si le bannissement est expiré, on le supprime
-            if ($bannissement->isBannissementExpired()) {
+            if ($bannissement->banneExpiree()) {
                 $this->entityManager->remove($bannissement);
                 $this->entityManager->flush();
                 error_log('UserChecker: Bannissement expiré pour l\'utilisateur ' . $user->getEmail() . '. Bannissement supprimé.');

@@ -17,9 +17,11 @@ class ProfileType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
+                'required' => false,
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom',
+                'required' => false,
             ])
             ->add('dateDeNaissance', DateType::class, [
                 'label' => 'Date de Naissance',

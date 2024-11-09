@@ -17,6 +17,9 @@ class AdminArchivageController extends AbstractController
     #[Route('/admin/archive/{type}/{id}', name: 'app_archive')]
     public function archive(string $type, int $id, EntityManagerInterface $entityManager): Response
     {
+
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         // On commence avec une entité vide
         $entity = null;
 

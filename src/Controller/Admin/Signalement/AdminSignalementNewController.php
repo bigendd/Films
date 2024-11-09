@@ -28,6 +28,9 @@ class AdminSignalementNewController extends AbstractController // Contrôleur qu
     #[Route('/{id}/new', name: 'admin_signalement_new', methods: ['POST'])] // Route pour la méthode handle avec POST
     public function handle(int $id, Request $request): Response
     {
+        // Vérification que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         // On cherche le signalement par ID
         $signalement = $this->entityManager->getRepository(Signalement::class)->find($id);
 
@@ -93,20 +96,19 @@ class AdminSignalementNewController extends AbstractController // Contrôleur qu
         // On sauvegarde les changements dans la base de données
         $this->entityManager->flush();
 
-        // On crée un email pour notifier l'utilisateur du traitement du signalement
-        $email = (new Email())
-            ->from('amarbelaifa8@gmail.com')
-            ->to($signalement->getUtilisateur()->getEmail())
-            ->subject('Réponse à votre signalement')
-            ->html($this->renderView('reponse/index.html.twig', [
-                'signalement' => $signalement,
-            ]));
+        // // On crée un email pour notifier l'utilisateur du traitement du signalement
+        // $email = (new Email())
+        //     ->from('amarbelaifa8@gmail.com')
+        //     ->to($signalement->getUtilisateur()->getEmail())
+        //     ->subject('Réponse à votre signalement')
+        //     ->html($this->renderView('reponse/index.html.twig', [
+        //         'signalement' => $signalement,
+        //     ]));
 
-        // On envoie l'email à l'utilisateur
-        $this->mailer->send($email);
+        // // On envoie l'email à l'utilisateur
+        // $this->mailer->send($email);
 
         // On ajoute un message flash pour notifier que l'opération a été réussie
-        $this->addFlash('success', 'Réponse envoyée, utilisateur banni et signalement archivé.');
 
         // On redirige vers la liste des signalements
         return $this->redirectToRoute('admin_signalement_index');
