@@ -6,9 +6,7 @@ use App\Entity\InfoUtilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<InfoUtilisateur>
- */
+
 class InfoUtilisateurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

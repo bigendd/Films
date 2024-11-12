@@ -9,7 +9,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class CacheControlSubscriber implements EventSubscriberInterface
 {
     // Retourne les événements auxquels ce souscripteur s'abonne
-    public static function getSubscribedEvents()
+    //static ça permet de symfony d'appler directement la classe emme meme sans l'instance
+    public static function getSubscribedEvents() 
     {
         return [
             KernelEvents::RESPONSE => 'onKernelResponse', // S'abonne à l'événement de réponse
