@@ -1,45 +1,43 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
+# Ce fichier est le point d'entrée pour configurer vos propres services.
+# Les fichiers dans le sous-répertoire packages/ configurent vos dépendances.
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+# Placez ici les paramètres qui n'ont pas besoin de changer sur chaque machine où l'application est déployée
+# Référence aux bonnes pratiques Symfony pour la configuration des applications
 parameters:
-    tmdb_api_key: '%env(TMDB_API_KEY)%'
-    tmdb_api_base_url: '%env(TMDB_API_BASE_URL)%'
-    
+    tmdb_api_key: '%env(TMDB_API_KEY)%'          # Clé API de TMDB, récupérée depuis la variable d'environnement
+    tmdb_api_base_url: '%env(TMDB_API_BASE_URL)%' # URL de base de l'API TMDB, récupérée depuis la variable d'environnement
 
 services:
-    # default configuration for services in *this* file
+    # Configuration par défaut pour les services définis dans ce fichier
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true      # Injection automatique des dépendances dans vos services
+        autoconfigure: true # Enregistrement automatique de vos services comme commandes, abonnés d'événements, etc.
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+    # Rend les classes du répertoire src/ disponibles comme services
+    # Crée un service par classe, dont l'ID est le nom complet de la classe
     App\:
-        resource: '../src/'
-        exclude:
+        resource: '../src/' # Définit le répertoire de ressources pour les services
+        exclude:            # Exclut certains fichiers/répertoires de la création automatique de services
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
 
     App\Service\TmdbApiService:
         arguments:
-            $httpClient: '@http_client'
-            $apiKey: '%tmdb_api_key%'
-            $baseUrl: '%tmdb_api_base_url%'
+            $httpClient: '@http_client'       # Injecte le service HttpClient pour les requêtes HTTP
+            $apiKey: '%tmdb_api_key%'         # Injecte la clé API TMDB depuis les paramètres
+            $baseUrl: '%tmdb_api_base_url%'   # Injecte l'URL de base de l'API TMDB depuis les paramètres
 
     # ...
     App\Security\UserChecker:
-        autowire: true
+        autowire: true                        # Injection automatique activée pour UserChecker
         tags:
-            - { name: 'security.user_checker' }
+            - { name: 'security.user_checker' } # Définit ce service comme vérificateur de sécurité utilisateur
 
     App\Handler\LoginSuccessHandler:
         arguments:
-            $router: '@router'
+            $router: '@router'                # Injecte le service Router pour gérer la redirection après connexion réussie
 
-            
     App\EventSubscriber\CacheControlSubscriber:
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber } # Enregistre ce service comme abonné d'événements au noyau Symfony

@@ -29,7 +29,6 @@ class AvisNewController extends AbstractController
 
         // Empêche les administrateurs de soumettre des avis
         if ($this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Les administrateurs ne peuvent pas laisser des avis.'); // Message d'erreur pour les administrateurs
             return $this->redirectToRoute('film_detail', ['id' => $filmId]); // Redirige vers les détails du film
         }
 
