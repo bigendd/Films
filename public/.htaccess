@@ -1,0 +1,39 @@
+# Définit le fichier par défaut à utiliser quand un répertoire est accédé
+DirectoryIndex index.php
+
+# Désactive l'option MultiViews (utile pour les contenus multilingues ou multiformats)
+Options -MultiViews
+
+# Si le module mod_rewrite est activé, on configure des règles de réécriture d'URL
+<IfModule mod_rewrite.c>
+    # Active l'option de liens symboliques, mais uniquement si le propriétaire du fichier correspond
+    Options +SymLinksIfOwnerMatch
+
+    # Active le moteur de réécriture d'URL
+    RewriteEngine On
+
+    # Cette règle est utilisée pour détecter un problème d'URL et ajouter la partie du chemin avant un identifiant
+    RewriteCond %{REQUEST_URI}::$0 ^(/.+)/(.*)::\2$
+    RewriteRule .* - [E=BASE:%1]
+
+    # Vérifie si un en-tête Authorization est présent dans la requête HTTP
+    RewriteCond %{HTTP:Authorization} .+
+    # Si un en-tête Authorization est présent, on le conserve dans la variable d'environnement HTTP_AUTHORIZATION
+    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%0]
+
+    # Si aucune redirection n'a eu lieu, réécrit l'URL pour ajouter la base et redirige vers index.php
+    RewriteCond %{ENV:REDIRECT_STATUS} =""
+    RewriteRule ^index\.php(?:/(.*)|$) %{ENV:BASE}/$1 [R=301,L]
+
+    # Si le fichier demandé n'existe pas, réécrit la requête vers index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ %{ENV:BASE}/index.php [L]
+</IfModule>
+
+# Si le module mod_rewrite n'est pas activé, utilise le module mod_alias pour rediriger vers index.php
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        # Si mod_rewrite n'est pas activé, redirige toutes les requêtes vers index.php
+        RedirectMatch 307 ^/$ /index.php/
+    </IfModule>
+</IfModule>
